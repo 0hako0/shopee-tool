@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
@@ -8,401 +7,405 @@
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=DM+Mono:wght@400;500&display=swap');
 
-:root {
-–orange: #EE4D2D;
-–orange-pale: #FFF0ED;
-–dark: #111;
-–mid: #666;
-–light: #F5F5F5;
-–white: #fff;
-–border: #E8E8E8;
-–green: #22C55E;
-–yellow: #F59E0B;
-–red: #EF4444;
-}
+  :root {
+    --orange: #EE4D2D;
+    --orange-pale: #FFF0ED;
+    --dark: #111;
+    --mid: #666;
+    --light: #F5F5F5;
+    --white: #fff;
+    --border: #E8E8E8;
+    --green: #22C55E;
+    --yellow: #F59E0B;
+    --red: #EF4444;
+  }
 
-- { box-sizing: border-box; margin: 0; padding: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
-body {
-font-family: ‘Noto Sans JP’, sans-serif;
-background: var(–light);
-color: var(–dark);
-min-height: 100vh;
-padding: 20px 16px 60px;
-}
+  body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background: var(--light);
+    color: var(--dark);
+    min-height: 100vh;
+    padding: 20px 16px 60px;
+  }
 
-/* ── HEADER ── */
-header {
-text-align: center;
-margin-bottom: 20px;
-}
-.logo-chip {
-display: inline-flex; align-items: center; gap: 6px;
-background: var(–orange); color: white;
-padding: 6px 16px; border-radius: 30px;
-font-size: 12px; font-weight: 700; letter-spacing: 0.06em;
-margin-bottom: 10px;
-}
-h1 { font-size: 20px; font-weight: 900; }
-h1 span { color: var(–orange); }
-.subtitle { font-size: 12px; color: var(–mid); margin-top: 4px; }
+  /* ── HEADER ── */
+  header {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .logo-chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--orange); color: white;
+    padding: 6px 16px; border-radius: 30px;
+    font-size: 12px; font-weight: 700; letter-spacing: 0.06em;
+    margin-bottom: 10px;
+  }
+  h1 { font-size: 20px; font-weight: 900; }
+  h1 span { color: var(--orange); }
+  .subtitle { font-size: 12px; color: var(--mid); margin-top: 4px; }
 
-/* ── TABS ── */
-.tabs {
-display: flex; gap: 4px;
-background: var(–white);
-border-radius: 12px;
-padding: 4px;
-margin-bottom: 16px;
-box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-}
-.tab {
-flex: 1; padding: 10px 4px;
-border: none; border-radius: 9px;
-font-size: 12px; font-weight: 700;
-font-family: ‘Noto Sans JP’, sans-serif;
-color: var(–mid);
-background: transparent;
-cursor: pointer;
-transition: all 0.2s;
-}
-.tab.active {
-background: var(–orange);
-color: white;
-box-shadow: 0 2px 8px rgba(238,77,45,0.3);
-}
+  /* ── TABS ── */
+  .tabs {
+    display: flex; gap: 4px;
+    background: var(--white);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+  .tab {
+    flex: 1; padding: 10px 4px;
+    border: none; border-radius: 9px;
+    font-size: 12px; font-weight: 700;
+    font-family: 'Noto Sans JP', sans-serif;
+    color: var(--mid);
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .tab.active {
+    background: #EE4D2D !important;
+    color: #ffffff !important;
+    box-shadow: 0 2px 8px rgba(238,77,45,0.3);
+  }
+  .tab {
+    -webkit-tap-highlight-color: transparent;
+  }
 
-/* ── PANELS ── */
-.panel { display: none; }
-.panel.active { display: block; animation: fadeIn 0.2s ease; }
-@keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+  /* ── PANELS ── */
+  .panel { display: none; }
+  .panel.active { display: block; animation: fadeIn 0.2s ease; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
 
-/* ── CARD ── */
-.card {
-background: var(–white);
-border-radius: 16px;
-padding: 18px 16px;
-margin-bottom: 14px;
-box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-}
-.card-title {
-font-size: 11px; font-weight: 700;
-color: var(–orange); letter-spacing: 0.1em;
-text-transform: uppercase;
-margin-bottom: 14px;
-display: flex; align-items: center; gap: 6px;
-}
-.card-title::before {
-content: ‘’; display: block;
-width: 3px; height: 13px;
-background: var(–orange); border-radius: 2px;
-}
+  /* ── CARD ── */
+  .card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 18px 16px;
+    margin-bottom: 14px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  }
+  .card-title {
+    font-size: 11px; font-weight: 700;
+    color: var(--orange); letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .card-title::before {
+    content: ''; display: block;
+    width: 3px; height: 13px;
+    background: var(--orange); border-radius: 2px;
+  }
 
-/* ── FORM ── */
-.form-grid {
-display: grid;
-grid-template-columns: 1fr 1fr;
-gap: 10px;
-margin-bottom: 12px;
-}
-.form-full { grid-column: 1 / -1; }
+  /* ── FORM ── */
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .form-full { grid-column: 1 / -1; }
 
-.field label {
-display: block; font-size: 11px;
-font-weight: 500; color: var(–mid);
-margin-bottom: 4px;
-}
-.field input, .field select {
-width: 100%;
-padding: 10px 12px;
-border: 1.5px solid var(–border);
-border-radius: 9px;
-font-size: 14px;
-font-family: ‘DM Mono’, monospace;
-color: var(–dark);
-background: var(–white);
--webkit-appearance: none;
-transition: border-color 0.2s;
-}
-.field select {
-font-family: ‘Noto Sans JP’, sans-serif;
-font-size: 13px;
-background-image: url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘10’ height=‘7’%3E%3Cpath d=‘M1 1l4 4 4-4’ stroke=’%23666’ stroke-width=‘1.5’ fill=‘none’ stroke-linecap=‘round’/%3E%3C/svg%3E”);
-background-repeat: no-repeat;
-background-position: right 10px center;
-padding-right: 28px;
-}
-.field input:focus, .field select:focus {
-outline: none; border-color: var(–orange);
-}
+  .field label {
+    display: block; font-size: 11px;
+    font-weight: 500; color: var(--mid);
+    margin-bottom: 4px;
+  }
+  .field input, .field select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1.5px solid var(--border);
+    border-radius: 9px;
+    font-size: 14px;
+    font-family: 'DM Mono', monospace;
+    color: var(--dark);
+    background: var(--white);
+    -webkit-appearance: none;
+    transition: border-color 0.2s;
+  }
+  .field select {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 13px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='7'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23666' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 28px;
+  }
+  .field input:focus, .field select:focus {
+    outline: none; border-color: var(--orange);
+  }
 
-.add-btn {
-width: 100%; padding: 13px;
-background: var(–orange); color: white;
-border: none; border-radius: 11px;
-font-size: 14px; font-weight: 700;
-font-family: ‘Noto Sans JP’, sans-serif;
-cursor: pointer; letter-spacing: 0.04em;
-transition: all 0.15s;
-}
-.add-btn:active { transform: scale(0.98); opacity: 0.9; }
+  .add-btn {
+    width: 100%; padding: 13px;
+    background: #EE4D2D !important; color: white !important;
+    border: none; border-radius: 11px;
+    font-size: 14px; font-weight: 700;
+    font-family: 'Noto Sans JP', sans-serif;
+    cursor: pointer; letter-spacing: 0.04em;
+    transition: all 0.15s;
+  }
+  .add-btn:active { transform: scale(0.98); opacity: 0.9; }
 
-/* ── PRODUCT LIST ── */
-.empty-state {
-text-align: center; padding: 30px 20px;
-color: var(–mid); font-size: 13px; line-height: 1.8;
-}
-.empty-state .icon { font-size: 32px; margin-bottom: 8px; }
+  /* ── PRODUCT LIST ── */
+  .empty-state {
+    text-align: center; padding: 30px 20px;
+    color: var(--mid); font-size: 13px; line-height: 1.8;
+  }
+  .empty-state .icon { font-size: 32px; margin-bottom: 8px; }
 
-.product-item {
-border: 1.5px solid var(–border);
-border-radius: 12px;
-padding: 13px 14px;
-margin-bottom: 10px;
-background: var(–white);
-position: relative;
-animation: fadeIn 0.2s ease;
-}
+  .product-item {
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 13px 14px;
+    margin-bottom: 10px;
+    background: var(--white);
+    position: relative;
+    animation: fadeIn 0.2s ease;
+  }
 
-.product-header {
-display: flex; justify-content: space-between;
-align-items: flex-start; margin-bottom: 8px;
-}
-.product-name {
-font-size: 14px; font-weight: 700;
-color: var(–dark); flex: 1; padding-right: 8px;
-}
-.product-market {
-font-size: 10px; background: var(–light);
-color: var(–mid); padding: 3px 8px;
-border-radius: 6px; white-space: nowrap;
-}
+  .product-header {
+    display: flex; justify-content: space-between;
+    align-items: flex-start; margin-bottom: 8px;
+  }
+  .product-name {
+    font-size: 14px; font-weight: 700;
+    color: var(--dark); flex: 1; padding-right: 8px;
+  }
+  .product-market {
+    font-size: 10px; background: var(--light);
+    color: var(--mid); padding: 3px 8px;
+    border-radius: 6px; white-space: nowrap;
+  }
 
-.product-nums {
-display: grid; grid-template-columns: repeat(3, 1fr);
-gap: 6px; margin-bottom: 8px;
-}
-.num-box {
-background: var(–light); border-radius: 8px;
-padding: 7px 8px; text-align: center;
-}
-.num-box-label { font-size: 9px; color: var(–mid); margin-bottom: 2px; }
-.num-box-val {
-font-family: ‘DM Mono’, monospace;
-font-size: 13px; font-weight: 500; color: var(–dark);
-}
+  .product-nums {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 6px; margin-bottom: 8px;
+  }
+  .num-box {
+    background: var(--light); border-radius: 8px;
+    padding: 7px 8px; text-align: center;
+  }
+  .num-box-label { font-size: 9px; color: var(--mid); margin-bottom: 2px; }
+  .num-box-val {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px; font-weight: 500; color: var(--dark);
+  }
 
-.profit-row {
-display: flex; justify-content: space-between;
-align-items: center;
-}
-.profit-badge {
-font-family: ‘DM Mono’, monospace;
-font-size: 16px; font-weight: 500;
-}
-.profit-badge.pos { color: var(–green); }
-.profit-badge.neg { color: var(–red); }
+  .profit-row {
+    display: flex; justify-content: space-between;
+    align-items: center;
+  }
+  .profit-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 16px; font-weight: 500;
+  }
+  .profit-badge.pos { color: var(--green); }
+  .profit-badge.neg { color: var(--red); }
 
-.margin-chip {
-font-size: 11px; font-weight: 700;
-padding: 3px 10px; border-radius: 20px;
-}
-.margin-chip.good { background: rgba(34,197,94,0.12); color: var(–green); }
-.margin-chip.ok   { background: rgba(245,158,11,0.12); color: var(–yellow); }
-.margin-chip.bad  { background: rgba(239,68,68,0.12); color: var(–red); }
+  .margin-chip {
+    font-size: 11px; font-weight: 700;
+    padding: 3px 10px; border-radius: 20px;
+  }
+  .margin-chip.good { background: rgba(34,197,94,0.12); color: var(--green); }
+  .margin-chip.ok   { background: rgba(245,158,11,0.12); color: var(--yellow); }
+  .margin-chip.bad  { background: rgba(239,68,68,0.12); color: var(--red); }
 
-.product-actions {
-display: flex; gap: 6px; margin-top: 10px;
-}
-.action-btn {
-flex: 1; padding: 8px;
-border: 1.5px solid var(–border);
-border-radius: 8px; font-size: 12px; font-weight: 700;
-font-family: ‘Noto Sans JP’, sans-serif;
-cursor: pointer; background: var(–white);
-color: var(–mid); transition: all 0.15s;
-}
-.action-btn:active { transform: scale(0.97); }
-.action-btn.ai {
-border-color: var(–orange);
-color: var(–orange);
-background: var(–orange-pale);
-}
-.action-btn.del {
-border-color: #fecaca;
-color: var(–red);
-background: #FFF5F5;
-flex: 0; padding: 8px 14px;
-}
+  .product-actions {
+    display: flex; gap: 6px; margin-top: 10px;
+  }
+  .action-btn {
+    flex: 1; padding: 8px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px; font-size: 12px; font-weight: 700;
+    font-family: 'Noto Sans JP', sans-serif;
+    cursor: pointer; background: var(--white);
+    color: var(--mid); transition: all 0.15s;
+  }
+  .action-btn:active { transform: scale(0.97); }
+  .action-btn.ai {
+    border-color: var(--orange);
+    color: var(--orange);
+    background: var(--orange-pale);
+  }
+  .action-btn.del {
+    border-color: #fecaca;
+    color: var(--red);
+    background: #FFF5F5;
+    flex: 0; padding: 8px 14px;
+  }
 
-/* ── DESCRIPTION MODAL ── */
-.modal-overlay {
-display: none; position: fixed; inset: 0;
-background: rgba(0,0,0,0.5);
-z-index: 100; align-items: flex-end;
-justify-content: center;
-}
-.modal-overlay.open { display: flex; }
+  /* ── DESCRIPTION MODAL ── */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 1000; align-items: flex-end;
+    justify-content: center;
+    -webkit-backdrop-filter: blur(2px);
+    backdrop-filter: blur(2px);
+  }
+  .modal-overlay.open { display: flex; }
 
-.modal {
-background: var(–white);
-border-radius: 20px 20px 0 0;
-padding: 20px 16px 40px;
-width: 100%; max-height: 85vh;
-overflow-y: auto;
-animation: slideUp 0.3s ease;
-}
-@keyframes slideUp {
-from { transform: translateY(100%); }
-to { transform: translateY(0); }
-}
+  .modal {
+    background: var(--white);
+    border-radius: 20px 20px 0 0;
+    padding: 20px 16px 40px;
+    width: 100%; max-height: 85vh;
+    overflow-y: auto;
+    animation: slideUp 0.3s ease;
+  }
+  @keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
 
-.modal-handle {
-width: 36px; height: 4px;
-background: var(–border); border-radius: 4px;
-margin: 0 auto 16px;
-}
-.modal-title {
-font-size: 15px; font-weight: 900;
-margin-bottom: 4px;
-}
-.modal-sub {
-font-size: 12px; color: var(–mid);
-margin-bottom: 16px;
-}
+  .modal-handle {
+    width: 36px; height: 4px;
+    background: var(--border); border-radius: 4px;
+    margin: 0 auto 16px;
+  }
+  .modal-title {
+    font-size: 15px; font-weight: 900;
+    margin-bottom: 4px;
+  }
+  .modal-sub {
+    font-size: 12px; color: var(--mid);
+    margin-bottom: 16px;
+  }
 
-.lang-tabs {
-display: flex; gap: 4px; margin-bottom: 12px;
-}
-.lang-tab {
-padding: 6px 14px;
-border: 1.5px solid var(–border);
-border-radius: 8px; font-size: 12px; font-weight: 700;
-font-family: ‘Noto Sans JP’, sans-serif;
-cursor: pointer; background: var(–white); color: var(–mid);
-transition: all 0.15s;
-}
-.lang-tab.active {
-border-color: var(–orange);
-color: var(–orange);
-background: var(–orange-pale);
-}
+  .lang-tabs {
+    display: flex; gap: 4px; margin-bottom: 12px;
+  }
+  .lang-tab {
+    padding: 6px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px; font-size: 12px; font-weight: 700;
+    font-family: 'Noto Sans JP', sans-serif;
+    cursor: pointer; background: var(--white); color: var(--mid);
+    transition: all 0.15s;
+  }
+  .lang-tab.active {
+    border-color: var(--orange);
+    color: var(--orange);
+    background: var(--orange-pale);
+  }
 
-.desc-box {
-background: var(–light);
-border-radius: 10px; padding: 14px;
-font-size: 13px; line-height: 1.8;
-color: var(–dark); min-height: 120px;
-white-space: pre-wrap;
-position: relative;
-}
-.desc-box.loading {
-color: var(–mid);
-display: flex; align-items: center;
-justify-content: center; gap: 8px;
-}
+  .desc-box {
+    background: var(--light);
+    border-radius: 10px; padding: 14px;
+    font-size: 13px; line-height: 1.8;
+    color: var(--dark); min-height: 120px;
+    white-space: pre-wrap;
+    position: relative;
+  }
+  .desc-box.loading {
+    color: var(--mid);
+    display: flex; align-items: center;
+    justify-content: center; gap: 8px;
+  }
 
-.loading-dots span {
-display: inline-block;
-width: 6px; height: 6px;
-background: var(–orange); border-radius: 50%;
-animation: bounce 1.2s infinite;
-}
-.loading-dots span:nth-child(2) { animation-delay: 0.2s; }
-.loading-dots span:nth-child(3) { animation-delay: 0.4s; }
-@keyframes bounce {
-0%,80%,100% { transform: translateY(0); }
-40% { transform: translateY(-6px); }
-}
+  .loading-dots span {
+    display: inline-block;
+    width: 6px; height: 6px;
+    background: var(--orange); border-radius: 50%;
+    animation: bounce 1.2s infinite;
+  }
+  .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+  .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes bounce {
+    0%,80%,100% { transform: translateY(0); }
+    40% { transform: translateY(-6px); }
+  }
 
-.copy-btn {
-width: 100%; padding: 13px;
-background: var(–dark); color: white;
-border: none; border-radius: 11px;
-font-size: 14px; font-weight: 700;
-font-family: ‘Noto Sans JP’, sans-serif;
-cursor: pointer; margin-top: 12px;
-transition: all 0.15s;
-}
-.copy-btn:active { opacity: 0.85; }
+  .copy-btn {
+    width: 100%; padding: 13px;
+    background: var(--dark); color: white;
+    border: none; border-radius: 11px;
+    font-size: 14px; font-weight: 700;
+    font-family: 'Noto Sans JP', sans-serif;
+    cursor: pointer; margin-top: 12px;
+    transition: all 0.15s;
+  }
+  .copy-btn:active { opacity: 0.85; }
 
-.close-btn {
-width: 100%; padding: 12px;
-background: var(–light); color: var(–mid);
-border: none; border-radius: 11px;
-font-size: 14px; font-weight: 700;
-font-family: ‘Noto Sans JP’, sans-serif;
-cursor: pointer; margin-top: 8px;
-}
+  .close-btn {
+    width: 100%; padding: 12px;
+    background: var(--light); color: var(--mid);
+    border: none; border-radius: 11px;
+    font-size: 14px; font-weight: 700;
+    font-family: 'Noto Sans JP', sans-serif;
+    cursor: pointer; margin-top: 8px;
+  }
 
-/* ── SUMMARY ── */
-.summary-grid {
-display: grid; grid-template-columns: 1fr 1fr;
-gap: 8px; margin-bottom: 14px;
-}
-.summary-box {
-background: var(–light); border-radius: 10px;
-padding: 12px; text-align: center;
-}
-.summary-box-label { font-size: 10px; color: var(–mid); margin-bottom: 4px; }
-.summary-box-val {
-font-family: ‘DM Mono’, monospace;
-font-size: 20px; font-weight: 500; color: var(–dark);
-}
-.summary-box-val.orange { color: var(–orange); }
-.summary-box-val.green { color: var(–green); }
+  /* ── SUMMARY ── */
+  .summary-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 8px; margin-bottom: 14px;
+  }
+  .summary-box {
+    background: var(--light); border-radius: 10px;
+    padding: 12px; text-align: center;
+  }
+  .summary-box-label { font-size: 10px; color: var(--mid); margin-bottom: 4px; }
+  .summary-box-val {
+    font-family: 'DM Mono', monospace;
+    font-size: 20px; font-weight: 500; color: var(--dark);
+  }
+  .summary-box-val.orange { color: var(--orange); }
+  .summary-box-val.green { color: var(--green); }
 
-/* ── CSV ── */
-.csv-btn {
-width: 100%; padding: 13px;
-background: var(–white);
-border: 1.5px solid var(–border);
-border-radius: 11px;
-font-size: 14px; font-weight: 700;
-font-family: ‘Noto Sans JP’, sans-serif;
-cursor: pointer; color: var(–dark);
-transition: all 0.15s;
-}
-.csv-btn:active { background: var(–light); }
+  /* ── CSV ── */
+  .csv-btn {
+    width: 100%; padding: 13px;
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    border-radius: 11px;
+    font-size: 14px; font-weight: 700;
+    font-family: 'Noto Sans JP', sans-serif;
+    cursor: pointer; color: var(--dark);
+    transition: all 0.15s;
+  }
+  .csv-btn:active { background: var(--light); }
 
-.tip {
-font-size: 11px; color: var(–mid);
-text-align: center; line-height: 1.7;
-margin-top: 8px;
-}
+  .tip {
+    font-size: 11px; color: var(--mid);
+    text-align: center; line-height: 1.7;
+    margin-top: 8px;
+  }
 
-.listing-field {
-background: var(–light);
-border-radius: 10px;
-padding: 10px 12px;
-margin-bottom: 8px;
-position: relative;
-}
-.lf-label {
-font-size: 10px; font-weight: 700;
-color: var(–mid); margin-bottom: 4px;
-letter-spacing: 0.05em;
-}
-.lf-val {
-font-size: 13px; color: var(–dark);
-line-height: 1.6; padding-right: 56px;
-word-break: break-all;
-}
-.lf-copy {
-position: absolute; right: 10px; top: 12px;
-padding: 5px 10px;
-background: var(–white);
-border: 1.5px solid var(–border);
-border-radius: 7px;
-font-size: 11px; font-weight: 700;
-font-family: ‘Noto Sans JP’, sans-serif;
-color: var(–orange); cursor: pointer;
-white-space: nowrap;
-transition: all 0.15s;
-}
-.lf-copy:active { background: var(–orange-pale); }
+  .listing-field {
+    background: var(--light);
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    position: relative;
+  }
+  .lf-label {
+    font-size: 10px; font-weight: 700;
+    color: var(--mid); margin-bottom: 4px;
+    letter-spacing: 0.05em;
+  }
+  .lf-val {
+    font-size: 13px; color: var(--dark);
+    line-height: 1.6; padding-right: 56px;
+    word-break: break-all;
+  }
+  .lf-copy {
+    position: absolute; right: 10px; top: 12px;
+    padding: 5px 10px;
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    border-radius: 7px;
+    font-size: 11px; font-weight: 700;
+    font-family: 'Noto Sans JP', sans-serif;
+    color: var(--orange); cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.15s;
+  }
+  .lf-copy:active { background: var(--orange-pale); }
 </style>
-
 </head>
 <body>
 
@@ -413,7 +416,6 @@ transition: all 0.15s;
 </header>
 
 <!-- TABS -->
-
 <div class="tabs">
   <button class="tab active" onclick="switchTab('add')">➕ 追加</button>
   <button class="tab" onclick="switchTab('list')">📦 一覧</button>
@@ -422,7 +424,6 @@ transition: all 0.15s;
 </div>
 
 <!-- ── ADD PANEL ── -->
-
 <div class="panel active" id="panel-add">
   <div class="card">
     <div class="card-title">商品情報を入力</div>
@@ -486,7 +487,6 @@ transition: all 0.15s;
 </div>
 
 <!-- ── LIST PANEL ── -->
-
 <div class="panel" id="panel-list">
   <div id="product-list">
     <div class="empty-state">
@@ -497,7 +497,6 @@ transition: all 0.15s;
 </div>
 
 <!-- ── SUMMARY PANEL ── -->
-
 <div class="panel" id="panel-summary">
   <div class="card">
     <div class="card-title">全体集計</div>
@@ -528,80 +527,75 @@ transition: all 0.15s;
 </div>
 
 <!-- ── DESCRIPTION MODAL ── -->
-
 <div class="modal-overlay" id="modal" onclick="closeModalOutside(event)">
   <div class="modal">
     <div class="modal-handle"></div>
     <div class="modal-title" id="modal-title">商品説明文</div>
     <div class="modal-sub" id="modal-sub">AIが自動生成します</div>
 
-```
-<div class="lang-tabs">
-  <button class="lang-tab active" onclick="switchLang('ja', this)">日本語</button>
-  <button class="lang-tab" onclick="switchLang('en', this)">英語</button>
-  <button class="lang-tab" onclick="switchLang('zh', this)">中国語</button>
-</div>
+    <div class="lang-tabs">
+      <button class="lang-tab active" onclick="switchLang('ja', this)">日本語</button>
+      <button class="lang-tab" onclick="switchLang('en', this)">英語</button>
+      <button class="lang-tab" onclick="switchLang('zh', this)">中国語</button>
+    </div>
 
-<div class="desc-box" id="desc-content">
-  <div class="loading-dots">
-    <span></span><span></span><span></span>
-  </div>
-</div>
+    <div class="desc-box" id="desc-content">
+      <div class="loading-dots">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
 
-<button class="copy-btn" onclick="copyDesc()">📋 説明文をコピー</button>
+    <button class="copy-btn" onclick="copyDesc()">📋 説明文をコピー</button>
 
-<!-- 出品用データ -->
-<div style="margin-top:16px;border-top:1px solid var(--border);padding-top:16px;">
-  <div style="font-size:11px;font-weight:700;color:var(--orange);letter-spacing:0.08em;margin-bottom:10px;">📋 出品用データ一括コピー</div>
-  <div style="font-size:11px;color:var(--mid);margin-bottom:10px;line-height:1.6;">セラーセンターに貼り付けるデータをまとめてコピーできます</div>
+    <!-- 出品用データ -->
+    <div style="margin-top:16px;border-top:1px solid var(--border);padding-top:16px;">
+      <div style="font-size:11px;font-weight:700;color:var(--orange);letter-spacing:0.08em;margin-bottom:10px;">📋 出品用データ一括コピー</div>
+      <div style="font-size:11px;color:var(--mid);margin-bottom:10px;line-height:1.6;">セラーセンターに貼り付けるデータをまとめてコピーできます</div>
 
-  <div class="listing-field" id="lf-title-en">
-    <div class="lf-label">商品タイトル（英語）</div>
-    <div class="lf-val" id="lv-title-en">生成中...</div>
-    <button class="lf-copy" onclick="copyField('lv-title-en', this)">コピー</button>
-  </div>
-  <div class="listing-field" id="lf-title-zh">
-    <div class="lf-label">商品タイトル（中国語）</div>
-    <div class="lf-val" id="lv-title-zh">生成中...</div>
-    <button class="lf-copy" onclick="copyField('lv-title-zh', this)">コピー</button>
-  </div>
-  <div class="listing-field">
-    <div class="lf-label">カテゴリー</div>
-    <div class="lf-val" id="lv-category">-</div>
-    <button class="lf-copy" onclick="copyField('lv-category', this)">コピー</button>
-  </div>
-  <div class="listing-field">
-    <div class="lf-label">推奨販売価格</div>
-    <div class="lf-val" id="lv-price">-</div>
-    <button class="lf-copy" onclick="copyField('lv-price', this)">コピー</button>
-  </div>
-  <div class="listing-field">
-    <div class="lf-label">商品説明（日本語）</div>
-    <div class="lf-val" id="lv-desc-ja" style="white-space:pre-wrap;">生成中...</div>
-    <button class="lf-copy" onclick="copyField('lv-desc-ja', this)">コピー</button>
-  </div>
-  <div class="listing-field">
-    <div class="lf-label">商品説明（英語）</div>
-    <div class="lf-val" id="lv-desc-en" style="white-space:pre-wrap;">生成中...</div>
-    <button class="lf-copy" onclick="copyField('lv-desc-en', this)">コピー</button>
-  </div>
-  <div class="listing-field">
-    <div class="lf-label">商品説明（中国語）</div>
-    <div class="lf-val" id="lv-desc-zh" style="white-space:pre-wrap;">生成中...</div>
-    <button class="lf-copy" onclick="copyField('lv-desc-zh', this)">コピー</button>
-  </div>
+      <div class="listing-field" id="lf-title-en">
+        <div class="lf-label">商品タイトル（英語）</div>
+        <div class="lf-val" id="lv-title-en">生成中...</div>
+        <button class="lf-copy" onclick="copyField('lv-title-en', this)">コピー</button>
+      </div>
+      <div class="listing-field" id="lf-title-zh">
+        <div class="lf-label">商品タイトル（中国語）</div>
+        <div class="lf-val" id="lv-title-zh">生成中...</div>
+        <button class="lf-copy" onclick="copyField('lv-title-zh', this)">コピー</button>
+      </div>
+      <div class="listing-field">
+        <div class="lf-label">カテゴリー</div>
+        <div class="lf-val" id="lv-category">-</div>
+        <button class="lf-copy" onclick="copyField('lv-category', this)">コピー</button>
+      </div>
+      <div class="listing-field">
+        <div class="lf-label">推奨販売価格</div>
+        <div class="lf-val" id="lv-price">-</div>
+        <button class="lf-copy" onclick="copyField('lv-price', this)">コピー</button>
+      </div>
+      <div class="listing-field">
+        <div class="lf-label">商品説明（日本語）</div>
+        <div class="lf-val" id="lv-desc-ja" style="white-space:pre-wrap;">生成中...</div>
+        <button class="lf-copy" onclick="copyField('lv-desc-ja', this)">コピー</button>
+      </div>
+      <div class="listing-field">
+        <div class="lf-label">商品説明（英語）</div>
+        <div class="lf-val" id="lv-desc-en" style="white-space:pre-wrap;">生成中...</div>
+        <button class="lf-copy" onclick="copyField('lv-desc-en', this)">コピー</button>
+      </div>
+      <div class="listing-field">
+        <div class="lf-label">商品説明（中国語）</div>
+        <div class="lf-val" id="lv-desc-zh" style="white-space:pre-wrap;">生成中...</div>
+        <button class="lf-copy" onclick="copyField('lv-desc-zh', this)">コピー</button>
+      </div>
 
-  <button class="copy-btn" style="background:var(--dark);margin-top:4px;" onclick="copyAllListing()">📦 全データをまとめてコピー</button>
-</div>
+      <button class="copy-btn" style="background:var(--dark);margin-top:4px;" onclick="copyAllListing()">📦 全データをまとめてコピー</button>
+    </div>
 
-<button class="close-btn" onclick="closeModal()">閉じる</button>
-```
-
+    <button class="close-btn" onclick="closeModal()">閉じる</button>
   </div>
 </div>
 
 <!-- ── SETTINGS PANEL ── -->
-
 <div class="panel" id="panel-settings">
   <div class="card">
     <div class="card-title">AI設定（Gemini API）</div>
@@ -989,6 +983,5 @@ function closeModalOutside(e) {
 renderList();
 renderSummary();
 </script>
-
 </body>
 </html>
