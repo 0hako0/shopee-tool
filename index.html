@@ -417,10 +417,11 @@
 
 <!-- TABS -->
 <div class="tabs">
-  <button class="tab active" onclick="switchTab('add')">➕ 追加</button>
-  <button class="tab" onclick="switchTab('list')">📦 一覧</button>
-  <button class="tab" onclick="switchTab('summary')">📊 集計</button>
-  <button class="tab" onclick="switchTab('settings')">⚙️ 設定</button>
+  <button class="tab active" onclick="switchTab('add')">追加</button>
+  <button class="tab" onclick="switchTab('list')">一覧</button>
+  <button class="tab" onclick="switchTab('research')">🔍 調査</button>
+  <button class="tab" onclick="switchTab('summary')">集計</button>
+  <button class="tab" onclick="switchTab('settings')">設定</button>
 </div>
 
 <!-- ── ADD PANEL ── -->
@@ -496,6 +497,46 @@
     <div class="empty-state">
       <div class="icon">📦</div>
       まだ商品がありません<br>「商品追加」タブから追加してください
+    </div>
+  </div>
+</div>
+
+<!-- ── RESEARCH PANEL ── -->
+<div class="panel" id="panel-research">
+  <div class="card">
+    <div class="card-title">マーケットリサーチ</div>
+    <div class="form-grid">
+      <div class="field">
+        <label>国・マーケット</label>
+        <select id="r-market">
+          <option value="台湾">台湾</option>
+          <option value="タイ">タイ</option>
+          <option value="フィリピン">フィリピン</option>
+          <option value="マレーシア">マレーシア</option>
+          <option value="ベトナム">ベトナム</option>
+          <option value="シンガポール">シンガポール</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>カテゴリー</label>
+        <select id="r-category">
+          <option value="Home & Living">Home &amp; Living</option>
+          <option value="Health">Health</option>
+          <option value="Beauty">Beauty</option>
+          <option value="Food & Beverages">Food &amp; Beverages</option>
+          <option value="Hobbies & Collections">Hobbies &amp; Collections</option>
+          <option value="Sports & Outdoors">Sports &amp; Outdoors</option>
+        </select>
+      </div>
+    </div>
+    <button class="add-btn" onclick="runResearch()" id="research-btn">🔍 売れ筋を調べる</button>
+    <div style="font-size:11px;color:var(--mid);margin-top:8px;text-align:center;">※ Gemini APIキーが必要です・1回1リクエスト消費</div>
+  </div>
+
+  <div id="research-result" style="display:none;">
+    <div class="card">
+      <div class="card-title" id="research-title">調査結果</div>
+      <div id="research-content" style="font-size:13px;line-height:1.9;color:var(--dark);"></div>
     </div>
   </div>
 </div>
@@ -686,6 +727,13 @@ function switchTab(tab) {
   if (tab === 'list') renderList();
   if (tab === 'summary') renderSummary();
   if (tab === 'settings') { loadKeyToInput(); loadTargetMargin(); }
+  if (tab === 'research') {
+    var tabIds2 = ['add','list','research','summary','settings'];
+    var tabEls2 = document.querySelectorAll('.tab');
+    for (var k = 0; k < tabEls2.length; k++) {
+      tabEls2[k].classList.toggle('active', tabIds2[k] === tab);
+    }
+  }
 }
 
 // ── API KEY ──
@@ -1040,6 +1088,57 @@ function closeModalOutside(e) {
   if (e.target === document.getElementById('modal')) closeModal();
 }
 
+// ── RESEARCH ──
+async function runResearch() {
+  const apiKey = localStorage.getItem('gemini_api_key') || '';
+  if (!apiKey) {
+    alert('設定タブからGemini APIキーを登録してください');
+    return;
+  }
+  const market = document.getElementById('r-market').value;
+  const category = document.getElementById('r-category').value;
+  const btn = document.getElementById('research-btn');
+  btn.textContent = '調査中...';
+  btn.disabled = true;
+
+  const resultEl = document.getElementById('research-result');
+  const contentEl = document.getElementById('research-content');
+  const titleEl = document.getElementById('research-title');
+  resultEl.style.display = 'none';
+
+  const prompt = `Shopeeの${market}マーケットで、${category}カテゴリーで売れている日本製品について教えてください。
+
+以下の形式で具体的に教えてください：
+1. 今売れている商品TOP3〜5（具体的な商品名・ブランド名）
+2. 価格帯の相場（円換算でいくらくらいか）
+3. 売れているポイント・特徴
+4. 日本のセラーが参入するチャンスがあるニッチな商品
+
+最新のShopeeのトレンドを基に、できるだけ具体的に教えてください。`;
+
+  try {
+    const resp = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + apiKey, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: prompt }] }],
+        tools: [{ googleSearch: {} }]
+      })
+    });
+    const data = await resp.json();
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '結果を取得できませんでした';
+
+    titleEl.textContent = market + ' × ' + category + ' の売れ筋';
+    contentEl.innerHTML = text.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/###(.*?)<br>/g, '<div style="font-weight:700;color:var(--orange);margin-top:12px;margin-bottom:4px;">$1</div>').replace(/##(.*?)<br>/g, '<div style="font-weight:700;margin-top:12px;margin-bottom:4px;">$1</div>');
+    resultEl.style.display = 'block';
+  } catch(e) {
+    alert('調査に失敗しました。APIキーを確認してください。');
+  } finally {
+    btn.textContent = '🔍 売れ筋を調べる';
+    btn.disabled = false;
+  }
+}
+
 // init
 renderList();
 renderSummary();
@@ -1048,6 +1147,7 @@ window.switchTab = switchTab;
 window.addProduct = addProduct;
 window.deleteProduct = deleteProduct;
 window.editProduct = editProduct;
+window.runResearch = runResearch;
 window.openModal = openModal;
 window.closeModal = closeModal;
 window.closeModalOutside = closeModalOutside;
