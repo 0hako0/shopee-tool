@@ -705,12 +705,19 @@ function save() {
 function calcProfit(p) {
   const shipping = shippingByMarket[p.market][p.weight];
   const saleFeeRate = p.isNew ? 0 : saleFeeByMarket[p.market];
+  
   const saleFee  = p.price * saleFeeRate / 100;
   const slsFee   = p.price * SLS_PLUS / 100;
   const payoneer = p.price * PAYONEER / 100;
+  
   const profit   = p.price - p.cost - shipping - saleFee - slsFee - payoneer;
   const margin   = (profit / p.price) * 100;
-  return { profit, margin, shipping, saleFee, slsFee, payoneer };
+
+  // ここを追加：マーケットごとのレートを掛けて現地価格を出す
+  const rate = exchangeRates[p.market] || 1;
+  const localPrice = p.price * rate;
+
+  return { profit, margin, shipping, saleFee, slsFee, payoneer, localPrice };
 }
 
 function fmt(n) { return '¥' + Math.abs(Math.round(n)).toLocaleString(); }
@@ -822,6 +829,8 @@ function renderList() {
   }
   el.innerHTML = products.map(p => {
     const c = calcProfit(p);
+    const unitMap = { sg: 'S$', tw: 'NT$', th: '฿', my: 'RM', ph: '₱', vn: '₫' };
+    const unit = unitMap[p.market] || '';
     const margin = Math.round(c.margin * 10) / 10;
     const belowTarget = margin < targetMargin;
     let chipClass = margin >= 15 ? 'good' : margin >= 5 ? 'ok' : 'bad';
@@ -838,9 +847,9 @@ function renderList() {
           <div class="num-box-label">仕入れ</div>
           <div class="num-box-val">${fmt(p.cost)}</div>
         </div>
-        <div class="num-box">
-          <div class="num-box-label">販売</div>
-          <div class="num-box-val">${fmt(p.price)}</div>
+        <div class="num-box" style="border: 1px solid var(--orange); background: var(--orange-pale);">
+          <div class="num-box-label" style="color: var(--orange); font-weight: 700;">現地価格</div>
+          <div class="num-box-val" style="color: var(--orange);">${unit} ${Math.round(c.localPrice).toLocaleString()}</div>
         </div>
         <div class="num-box">
           <div class="num-box-label">送料</div>
@@ -1138,9 +1147,42 @@ async function runResearch() {
   }
 }
 
+let exchangeRates = {
+  sg: 0.011, // Singapore
+  tw: 0.22,  // Taiwan
+  th: 0.24,  // Thailand
+  my: 0.031, // Malaysia
+  ph: 0.38,  // Philippines
+  vn: 165.0  // Vietnam
+};
+
+async function updateExchangeRates() {
+  try {
+    const url = 'https://api.frankfurter.app/latest?from=JPY&to=SGD,MYR,THB,TWD,PHP,VND';
+    const resp = await fetch(url);
+    const data = await resp.json();
+
+    if (data && data.rates) {
+      exchangeRates.sg = data.rates.SGD;
+      exchangeRates.tw = data.rates.TWD;
+      exchangeRates.th = data.rates.THB;
+      exchangeRates.my = data.rates.MYR;
+      exchangeRates.ph = data.rates.PHP;
+      exchangeRates.vn = data.rates.VND;
+      
+      console.log("為替レートを最新に更新しました！", exchangeRates);
+      renderList();    // 最新レートでリストを再描画
+      renderSummary(); // 集計も再計算
+    }
+  } catch (e) {
+    console.error("レート取得失敗、既存の値を使用します", e);
+  }
+}
+
 // init
 renderList();
 renderSummary();
+updateExchangeRates(); 
 
 window.switchTab = switchTab;
 window.addProduct = addProduct;
