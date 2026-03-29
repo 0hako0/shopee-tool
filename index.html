@@ -997,9 +997,14 @@ async function openModal(id) {
       })
     });
     const data = await resp.json();
+    // AIからの返答テキストを取得
     const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
-    const clean = text.replace(/```json|```/g, '').trim();
-    const parsed = JSON.parse(clean);
+    
+    // JSONの部分だけを抽出する（これなら ```json が付いていても大丈夫です）
+    const jsonMatch = text.match(/\{[\s\S]*\}/); 
+    if (!jsonMatch) throw new Error("JSON format not found");
+    
+    const parsed = JSON.parse(jsonMatch[0]);
     currentDesc = parsed;
 
     document.getElementById('modal-sub').textContent = '生成完了！各項目をコピーして使ってください';
