@@ -565,6 +565,18 @@
     </div>
   </div>
   <div class="card">
+    <div class="card-title">為替レート <span id="rate-updated" style="font-size:10px;font-weight:400;color:var(--mid);margin-left:6px;">取得中...</span></div>
+    <div id="rate-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+      <div class="summary-box"><div class="summary-box-label">台湾 NT$</div><div class="summary-box-val" id="rate-tw" style="font-size:14px;">-</div></div>
+      <div class="summary-box"><div class="summary-box-label">シンガポール S$</div><div class="summary-box-val" id="rate-sg" style="font-size:14px;">-</div></div>
+      <div class="summary-box"><div class="summary-box-label">タイ ฿</div><div class="summary-box-val" id="rate-th" style="font-size:14px;">-</div></div>
+      <div class="summary-box"><div class="summary-box-label">マレーシア RM</div><div class="summary-box-val" id="rate-my" style="font-size:14px;">-</div></div>
+      <div class="summary-box"><div class="summary-box-label">フィリピン ₱</div><div class="summary-box-val" id="rate-ph" style="font-size:14px;">-</div></div>
+      <div class="summary-box"><div class="summary-box-label">ベトナム ₫</div><div class="summary-box-val" id="rate-vn" style="font-size:14px;">-</div></div>
+    </div>
+    <p class="tip" style="margin-top:8px;">¥1 = 各通貨の金額（frankfurter.app より自動取得）</p>
+  </div>
+  <div class="card">
     <div class="card-title">データ出力</div>
     <button class="csv-btn" onclick="exportCSV()">📄 CSVでダウンロード</button>
     <p class="tip">仕入れ値・販売価格・利益・利益率を含むCSVを出力します</p>
@@ -795,11 +807,27 @@ async function updateExchangeRates() {
       exchangeRates.my = data.rates.MYR;
       exchangeRates.ph = data.rates.PHP;
       exchangeRates.vn = data.rates.VND;
-      console.log('為替レート更新:', exchangeRates);
       renderList();
+      renderRates();
+      const now = new Date();
+      const timeStr = now.getHours() + ':' + String(now.getMinutes()).padStart(2,'0');
+      const el = document.getElementById('rate-updated');
+      if (el) el.textContent = timeStr + ' 更新';
     }
   } catch(e) {
     console.log('為替レート取得失敗、固定レートを使用');
+    renderRates();
+    const el = document.getElementById('rate-updated');
+    if (el) el.textContent = '固定レート使用中';
+  }
+}
+
+function renderRates() {
+  const fmt4 = (n) => n < 1 ? n.toFixed(4) : n.toFixed(2);
+  const ids = { tw:'rate-tw', sg:'rate-sg', th:'rate-th', my:'rate-my', ph:'rate-ph', vn:'rate-vn' };
+  for (const [market, elId] of Object.entries(ids)) {
+    const el = document.getElementById(elId);
+    if (el) el.textContent = fmt4(exchangeRates[market]);
   }
 }
 
