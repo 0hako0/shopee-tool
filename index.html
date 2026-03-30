@@ -798,7 +798,8 @@ let exchangeRates = { sg:0.011, tw:0.22, th:0.24, my:0.031, ph:0.38, vn:165.0 };
 
 async function updateExchangeRates() {
   try {
-    const resp = await fetch('https://api.frankfurter.app/latest?from=JPY&to=SGD,MYR,THB,TWD,PHP,VND');
+    // open.er-api.com はCORS対応の無料為替API
+    const resp = await fetch('https://open.er-api.com/v6/latest/JPY');
     const data = await resp.json();
     if (data && data.rates) {
       exchangeRates.sg = data.rates.SGD;
@@ -823,12 +824,22 @@ async function updateExchangeRates() {
 }
 
 function renderRates() {
-  const fmt4 = (n) => n < 1 ? n.toFixed(4) : n.toFixed(2);
-  const ids = { tw:'rate-tw', sg:'rate-sg', th:'rate-th', my:'rate-my', ph:'rate-ph', vn:'rate-vn' };
-  for (const [market, elId] of Object.entries(ids)) {
-    const el = document.getElementById(elId);
-    if (el) el.textContent = fmt4(exchangeRates[market]);
-  }
+  const fmt4 = (n) => {
+    if (n === undefined || n === null || isNaN(n)) return '-';
+    return n < 1 ? n.toFixed(4) : n.toFixed(2);
+  };
+  const el_tw = document.getElementById('rate-tw');
+  const el_sg = document.getElementById('rate-sg');
+  const el_th = document.getElementById('rate-th');
+  const el_my = document.getElementById('rate-my');
+  const el_ph = document.getElementById('rate-ph');
+  const el_vn = document.getElementById('rate-vn');
+  if (el_tw) el_tw.textContent = fmt4(exchangeRates.tw);
+  if (el_sg) el_sg.textContent = fmt4(exchangeRates.sg);
+  if (el_th) el_th.textContent = fmt4(exchangeRates.th);
+  if (el_my) el_my.textContent = fmt4(exchangeRates.my);
+  if (el_ph) el_ph.textContent = fmt4(exchangeRates.ph);
+  if (el_vn) el_vn.textContent = fmt4(exchangeRates.vn);
 }
 
 let products = JSON.parse(localStorage.getItem('shopee_products') || '[]');
@@ -864,7 +875,7 @@ function switchTab(tab) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   document.getElementById('panel-' + tab).classList.add('active');
   if (tab === 'list') renderList();
-  if (tab === 'summary') renderSummary();
+  if (tab === 'summary') { renderSummary(); renderRates(); }
   if (tab === 'settings') { loadKeyToInput(); loadTargetMargin(); loadFeeToInput(); }
   if (tab === 'research') {
     var tabIds2 = ['add','list','research','summary','settings'];
