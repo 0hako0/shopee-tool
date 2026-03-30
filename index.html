@@ -675,6 +675,8 @@
       <button class="lang-tab active" onclick="switchLang('ja', this)">日本語</button>
       <button class="lang-tab" onclick="switchLang('en', this)">英語</button>
       <button class="lang-tab" onclick="switchLang('zh', this)">中国語</button>
+      <button class="lang-tab" id="tab-th" style="display:none;" onclick="switchLang('th', this)">タイ語</button>
+      <button class="lang-tab" id="tab-vn" style="display:none;" onclick="switchLang('vn', this)">ベトナム語</button>
     </div>
 
     <div class="desc-box" id="desc-content">
@@ -700,6 +702,16 @@
         <div class="lf-val" id="lv-title-zh">生成中...</div>
         <button class="lf-copy" onclick="copyField('lv-title-zh', this)">コピー</button>
       </div>
+      <div class="listing-field" id="lf-title-th" style="display:none;">
+        <div class="lf-label">商品タイトル（タイ語）</div>
+        <div class="lf-val" id="lv-title-th">生成中...</div>
+        <button class="lf-copy" onclick="copyField('lv-title-th', this)">コピー</button>
+      </div>
+      <div class="listing-field" id="lf-title-vn" style="display:none;">
+        <div class="lf-label">商品タイトル（ベトナム語）</div>
+        <div class="lf-val" id="lv-title-vn">生成中...</div>
+        <button class="lf-copy" onclick="copyField('lv-title-vn', this)">コピー</button>
+      </div>
       <div class="listing-field">
         <div class="lf-label">カテゴリー</div>
         <div class="lf-val" id="lv-category">-</div>
@@ -724,6 +736,16 @@
         <div class="lf-label">商品説明（中国語）</div>
         <div class="lf-val" id="lv-desc-zh" style="white-space:pre-wrap;">生成中...</div>
         <button class="lf-copy" onclick="copyField('lv-desc-zh', this)">コピー</button>
+      </div>
+      <div class="listing-field" id="lf-desc-th" style="display:none;">
+        <div class="lf-label">商品説明（タイ語）</div>
+        <div class="lf-val" id="lv-desc-th" style="white-space:pre-wrap;">生成中...</div>
+        <button class="lf-copy" onclick="copyField('lv-desc-th', this)">コピー</button>
+      </div>
+      <div class="listing-field" id="lf-desc-vn" style="display:none;">
+        <div class="lf-label">商品説明（ベトナム語）</div>
+        <div class="lf-val" id="lv-desc-vn" style="white-space:pre-wrap;">生成中...</div>
+        <button class="lf-copy" onclick="copyField('lv-desc-vn', this)">コピー</button>
       </div>
 
       <button class="copy-btn" style="background:var(--dark);margin-top:4px;" onclick="copyAllListing()">📦 全データをまとめてコピー</button>
@@ -1206,8 +1228,18 @@ async function openModal(id) {
   const p = products.find(x => x.id === id);
   if (!p) return;
   currentProduct = p;
-  currentDesc = { ja:'', en:'', zh:'', title_en:'', title_zh:'' };
+  const isThaiMarket = p.market === 'th';
+  const isVnMarket   = p.market === 'vn';
+  currentDesc = { ja:'', en:'', zh:'', th:'', vn:'', title_en:'', title_zh:'', title_th:'', title_vn:'' };
   currentLang = 'ja';
+
+  // タイ/ベトナムタブの表示切替
+  document.getElementById('tab-th').style.display = isThaiMarket ? '' : 'none';
+  document.getElementById('tab-vn').style.display = isVnMarket   ? '' : 'none';
+  document.getElementById('lf-title-th').style.display = isThaiMarket ? '' : 'none';
+  document.getElementById('lf-title-vn').style.display = isVnMarket   ? '' : 'none';
+  document.getElementById('lf-desc-th').style.display  = isThaiMarket ? '' : 'none';
+  document.getElementById('lf-desc-vn').style.display  = isVnMarket   ? '' : 'none';
 
   document.querySelectorAll('.lang-tab').forEach((t,i) => t.classList.toggle('active', i===0));
   document.getElementById('modal-title').textContent = p.name;
@@ -1215,8 +1247,9 @@ async function openModal(id) {
   document.getElementById('desc-content').innerHTML = `<div class="loading-dots"><span></span><span></span><span></span></div>`;
 
   // 出品フィールドをリセット
-  ['lv-title-en','lv-title-zh','lv-desc-ja','lv-desc-en','lv-desc-zh'].forEach(id => {
-    document.getElementById(id).textContent = '生成中...';
+  ['lv-title-en','lv-title-zh','lv-title-th','lv-title-vn','lv-desc-ja','lv-desc-en','lv-desc-zh','lv-desc-th','lv-desc-vn'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = '生成中...';
   });
   document.getElementById('lv-category').textContent = p.category;
   document.getElementById('lv-price').textContent = `¥${p.price.toLocaleString()}`;
@@ -1240,9 +1273,13 @@ async function openModal(id) {
 {
   "title_en": "English product title (max 100 chars, include 'Japan' or 'Japanese', SEO-friendly)",
   "title_zh": "中文商品標題（最多100字，包含「日本」或「日製」，吸引人）",
+  ${isThaiMarket ? '"title_th": "ชื่อสินค้าภาษาไทย (ไม่เกิน 100 ตัวอักษร รวมคำว่า ญี่ปุ่น/Japan)," ' : ''}
+  ${isVnMarket   ? '"title_vn": "Tên sản phẩm tiếng Việt (tối đa 100 ký tự, bao gồm từ Nhật/Japan)," ' : ''}
   "ja": "日本語の商品説明文（200〜300文字、商品の特徴・使い方・メリット・日本製の安心感を含めて魅力的に。絵文字を適度に使用）",
   "en": "English product description for ${marketNames[p.market]} buyers (150-200 words, emphasize Japanese quality and safety, include features and benefits, use some emojis)",
   "zh": "針對${marketNames[p.market]}買家的中文商品描述（150〜200字，強調日本製品質與安全性，包含特色和優點，適當使用表情符號）"
+  ${isThaiMarket ? ', "th": "คำอธิบายสินค้าภาษาไทยสำหรับผู้ซื้อไทย (150-200 คำ เน้นคุณภาพญี่ปุ่น ใช้ emoji)"' : ''}
+  ${isVnMarket   ? ', "vn": "Mô tả sản phẩm tiếng Việt cho người mua Việt Nam (150-200 từ, nhấn mạnh chất lượng Nhật Bản, dùng emoji)"' : ''}
 }`;
 
   try {
@@ -1281,6 +1318,10 @@ async function openModal(id) {
     document.getElementById('lv-desc-ja').textContent  = parsed.ja || '-';
     document.getElementById('lv-desc-en').textContent  = parsed.en || '-';
     document.getElementById('lv-desc-zh').textContent  = parsed.zh || '-';
+    if (parsed.title_th) document.getElementById('lv-title-th').textContent = parsed.title_th;
+    if (parsed.title_vn) document.getElementById('lv-title-vn').textContent = parsed.title_vn;
+    if (parsed.th) document.getElementById('lv-desc-th').textContent = parsed.th;
+    if (parsed.vn) document.getElementById('lv-desc-vn').textContent = parsed.vn;
 
   } catch(e) {
     document.getElementById('desc-content').textContent = '生成に失敗しました。再度お試しください。';
