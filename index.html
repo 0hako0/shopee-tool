@@ -507,28 +507,41 @@
   <!-- Shopee価格リサーチ -->
   <div class="card">
     <div class="card-title">🔎 Shopee価格リサーチ</div>
-    <div style="font-size:11px;color:var(--mid);margin-bottom:12px;">商品名を入れて各国Shopeeの販売価格を確認できます</div>
+    <div style="font-size:11px;color:var(--mid);margin-bottom:12px;">日本語で入力するとAIが自動翻訳して各国Shopeeで検索できます</div>
     <div class="field form-full" style="margin-bottom:8px;">
       <label>商品名（日本語）</label>
       <input type="text" id="search-keyword" placeholder="例：ルック 防カビくん煙剤">
     </div>
-    <div class="field form-full" style="margin-bottom:8px;">
-      <label>英語キーワード（台湾・シンガポール・マレーシア・フィリピン向け）</label>
-      <input type="text" id="search-keyword-en" placeholder="例：Look Mold Prevention Smoke">
+    <button class="add-btn" onclick="translateKeyword()" id="translate-btn" style="margin-bottom:10px;">🌐 翻訳して検索準備</button>
+
+    <div id="translated-keywords" style="display:none;margin-bottom:12px;">
+      <div style="font-size:11px;font-weight:700;color:var(--dark);margin-bottom:6px;">翻訳結果（編集できます）</div>
+      <div class="field form-full" style="margin-bottom:6px;">
+        <label>英語（シンガポール・マレーシア・フィリピン向け）</label>
+        <input type="text" id="search-keyword-en" placeholder="英語キーワード">
+      </div>
+      <div class="field form-full" style="margin-bottom:6px;">
+        <label>中国語（台湾向け）</label>
+        <input type="text" id="search-keyword-zh" placeholder="中国語キーワード">
+      </div>
+      <div class="field form-full" style="margin-bottom:6px;">
+        <label>タイ語（タイ向け）</label>
+        <input type="text" id="search-keyword-th" placeholder="タイ語キーワード">
+      </div>
+      <div class="field form-full" style="margin-bottom:10px;">
+        <label>ベトナム語（ベトナム向け）</label>
+        <input type="text" id="search-keyword-vn" placeholder="ベトナム語キーワード">
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <button onclick="openShopee('tw')" style="padding:10px;background:var(--orange-pale);color:var(--orange);border:none;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer;">🛍 台湾で検索</button>
+        <button onclick="openShopee('sg')" style="padding:10px;background:var(--orange-pale);color:var(--orange);border:none;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer;">🛍 シンガポールで検索</button>
+        <button onclick="openShopee('th')" style="padding:10px;background:var(--orange-pale);color:var(--orange);border:none;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer;">🛍 タイで検索</button>
+        <button onclick="openShopee('my')" style="padding:10px;background:var(--orange-pale);color:var(--orange);border:none;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer;">🛍 マレーシアで検索</button>
+        <button onclick="openShopee('ph')" style="padding:10px;background:var(--orange-pale);color:var(--orange);border:none;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer;">🛍 フィリピンで検索</button>
+        <button onclick="openShopee('vn')" style="padding:10px;background:var(--orange-pale);color:var(--orange);border:none;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer;">🛍 ベトナムで検索</button>
+      </div>
+      <p class="tip" style="margin-top:8px;">翻訳結果は編集できます。台湾は中国語、他は英語で検索します</p>
     </div>
-    <div class="field form-full" style="margin-bottom:12px;">
-      <label>中国語キーワード（台湾向け）</label>
-      <input type="text" id="search-keyword-zh" placeholder="例：防霉煙霧劑">
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-      <button onclick="openShopee('tw')" style="padding:10px;background:var(--orange-pale);color:var(--orange);border:none;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer;">🛍 台湾で検索</button>
-      <button onclick="openShopee('sg')" style="padding:10px;background:var(--orange-pale);color:var(--orange);border:none;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer;">🛍 シンガポールで検索</button>
-      <button onclick="openShopee('th')" style="padding:10px;background:var(--orange-pale);color:var(--orange);border:none;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer;">🛍 タイで検索</button>
-      <button onclick="openShopee('my')" style="padding:10px;background:var(--orange-pale);color:var(--orange);border:none;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer;">🛍 マレーシアで検索</button>
-      <button onclick="openShopee('ph')" style="padding:10px;background:var(--orange-pale);color:var(--orange);border:none;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer;">🛍 フィリピンで検索</button>
-      <button onclick="openShopee('vn')" style="padding:10px;background:var(--orange-pale);color:var(--orange);border:none;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer;">🛍 ベトナムで検索</button>
-    </div>
-    <p class="tip" style="margin-top:8px;">台湾は中国語→英語→日本語の優先順で検索します</p>
   </div>
 
   <!-- 為替計算機 -->
@@ -1364,16 +1377,59 @@ const shopeeUrls = {
   vn: 'https://shopee.vn/search?keyword=',
 };
 
-// マーケットごとのキーワード優先順位
-// tw: 中国語→英語→日本語
-// sg/my/ph: 英語→日本語
-// th/vn: 英語→日本語
+async function translateKeyword() {
+  const keyword = document.getElementById('search-keyword').value.trim();
+  if (!keyword) { alert('商品名を入力してください'); return; }
+  const apiKey = localStorage.getItem('gemini_api_key') || '';
+  if (!apiKey) { alert('設定タブからGemini APIキーを登録してください'); return; }
+
+  const btn = document.getElementById('translate-btn');
+  btn.textContent = '翻訳中...';
+  btn.disabled = true;
+
+  const prompt = `以下の日本語の商品名を、Shopeeで検索するための短いキーワードに翻訳してください。
+商品名: ${keyword}
+
+以下のJSON形式のみで返答してください（マークダウン不要）:
+{"en": "English search keyword (short, 2-5 words)", "zh": "中文搜尋關鍵字（簡短，2-4個詞）", "th": "คีย์เวิร์ดภาษาไทย（สั้น 2-4 คำ）", "vn": "từ khóa tiếng Việt (ngắn gọn, 2-4 từ)"}`;
+
+  try {
+    const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite-preview:generateContent?key=${apiKey}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+    });
+    const data = await resp.json();
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    const clean = text.replace(/```json|```/g, '').trim();
+    const parsed = JSON.parse(clean);
+    document.getElementById('search-keyword-en').value = parsed.en || '';
+    document.getElementById('search-keyword-zh').value = parsed.zh || '';
+    document.getElementById('search-keyword-th').value = parsed.th || '';
+    document.getElementById('search-keyword-vn').value = parsed.vn || '';
+    document.getElementById('translated-keywords').style.display = 'block';
+  } catch(e) {
+    // 翻訳失敗時は日本語のまま検索できるようにする
+    document.getElementById('search-keyword-en').value = keyword;
+    document.getElementById('search-keyword-zh').value = keyword;
+    document.getElementById('translated-keywords').style.display = 'block';
+    alert('翻訳に失敗しました。日本語のまま検索できます。');
+  } finally {
+    btn.textContent = '🌐 翻訳して検索準備';
+    btn.disabled = false;
+  }
+}
+
 function getKeyword(market) {
   const ja = document.getElementById('search-keyword').value.trim();
-  const en = document.getElementById('search-keyword-en').value.trim();
-  const zh = document.getElementById('search-keyword-zh').value.trim();
+  const en = (document.getElementById('search-keyword-en') || {}).value?.trim() || '';
+  const zh = (document.getElementById('search-keyword-zh') || {}).value?.trim() || '';
+  const th = (document.getElementById('search-keyword-th') || {}).value?.trim() || '';
+  const vn = (document.getElementById('search-keyword-vn') || {}).value?.trim() || '';
   if (!ja && !en && !zh) { alert('商品名を入力してください'); return null; }
   if (market === 'tw') return zh || en || ja;
+  if (market === 'th') return th || en || ja;
+  if (market === 'vn') return vn || en || ja;
   return en || ja;
 }
 
@@ -1576,6 +1632,7 @@ renderSummary();
 updateExchangeRates();
 
 window.openShopee = openShopee;
+window.translateKeyword = translateKeyword;
 window.calcExchange = calcExchange;
 window.switchTab = switchTab;
 window.addProduct = addProduct;
