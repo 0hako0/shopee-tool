@@ -955,20 +955,26 @@ async function openModal(id) {
 
   document.getElementById('modal').classList.add('open');
 
-  const prompt = `あなたはShopeeの日本人セラーです。以下の商品の出品用データを生成してください。
+  const prompt = `あなたはShopeeで${marketNames[p.market]}に日本製品を販売するプロのECセラーです。以下の商品の出品用データを生成してください。
+
+【重要な方針】
+- ターゲットは${marketNames[p.market]}在住の消費者です
+- 「日本製・日本ブランド」であることを自然にアピールしてください
+- 日本の品質・安全性・信頼性を強調してください
+- ${marketNames[p.market]}の消費者に刺さる表現を使ってください
+- 絵文字を適度に使って親しみやすくしてください
 
 商品名: ${p.name}
 カテゴリー: ${p.category}
-販売マーケット: ${marketNames[p.market]}
 販売価格: ${p.price}円相当
 
 以下のJSON形式のみで返答してください（マークダウン不要）:
 {
-  "title_en": "English product title (max 100 chars, SEO-friendly)",
-  "title_zh": "中文商品標題（最多100字，吸引人）",
-  "ja": "日本語の商品説明文（3〜5文、魅力的に）",
-  "en": "English product description (3-5 sentences, appealing)",
-  "zh": "中文商品描述（3〜5句，吸引人）"
+  "title_en": "English product title (max 100 chars, include 'Japan' or 'Japanese', SEO-friendly)",
+  "title_zh": "中文商品標題（最多100字，包含「日本」或「日製」，吸引人）",
+  "ja": "日本語の商品説明文（200〜300文字、商品の特徴・使い方・メリット・日本製の安心感を含めて魅力的に。絵文字を適度に使用）",
+  "en": "English product description for ${marketNames[p.market]} buyers (150-200 words, emphasize Japanese quality and safety, include features and benefits, use some emojis)",
+  "zh": "針對${marketNames[p.market]}買家的中文商品描述（150〜200字，強調日本製品質與安全性，包含特色和優點，適當使用表情符號）"
 }`;
 
   try {
