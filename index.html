@@ -654,6 +654,79 @@
     <button class="add-btn" onclick="saveTargetMargin()">保存する</button>
     <div id="margin-status" style="margin-top:10px;font-size:12px;text-align:center;color:var(--mid);"></div>
   </div>
+
+  <div class="card">
+    <div class="card-title">手数料設定</div>
+    <div style="font-size:11px;color:var(--mid);margin-bottom:12px;line-height:1.7;">
+      未入力の場合はデフォルト値を使用します。<br>
+      実際の手数料はセラーセンターで確認してください。
+    </div>
+    <div style="font-size:11px;font-weight:700;color:var(--dark);margin-bottom:8px;">共通手数料</div>
+    <div class="form-grid" style="margin-bottom:12px;">
+      <div class="field">
+        <label>SLS手数料（%）</label>
+        <div style="position:relative;">
+          <input type="number" id="fee-sls" placeholder="1.75" inputmode="decimal" step="0.01" style="padding-right:30px;">
+          <span style="position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--mid);">%</span>
+        </div>
+      </div>
+      <div class="field">
+        <label>Payoneer手数料（%）</label>
+        <div style="position:relative;">
+          <input type="number" id="fee-payoneer" placeholder="2.0" inputmode="decimal" step="0.01" style="padding-right:30px;">
+          <span style="position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--mid);">%</span>
+        </div>
+      </div>
+    </div>
+    <div style="font-size:11px;font-weight:700;color:var(--dark);margin-bottom:8px;">販売手数料（国別）</div>
+    <div class="form-grid" style="margin-bottom:12px;">
+      <div class="field">
+        <label>台湾（%）</label>
+        <div style="position:relative;">
+          <input type="number" id="fee-tw" placeholder="6" inputmode="decimal" step="0.01" style="padding-right:30px;">
+          <span style="position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--mid);">%</span>
+        </div>
+      </div>
+      <div class="field">
+        <label>シンガポール（%）</label>
+        <div style="position:relative;">
+          <input type="number" id="fee-sg" placeholder="7" inputmode="decimal" step="0.01" style="padding-right:30px;">
+          <span style="position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--mid);">%</span>
+        </div>
+      </div>
+      <div class="field">
+        <label>タイ（%）</label>
+        <div style="position:relative;">
+          <input type="number" id="fee-th" placeholder="6" inputmode="decimal" step="0.01" style="padding-right:30px;">
+          <span style="position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--mid);">%</span>
+        </div>
+      </div>
+      <div class="field">
+        <label>マレーシア（%）</label>
+        <div style="position:relative;">
+          <input type="number" id="fee-my" placeholder="6" inputmode="decimal" step="0.01" style="padding-right:30px;">
+          <span style="position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--mid);">%</span>
+        </div>
+      </div>
+      <div class="field">
+        <label>フィリピン（%）</label>
+        <div style="position:relative;">
+          <input type="number" id="fee-ph" placeholder="6" inputmode="decimal" step="0.01" style="padding-right:30px;">
+          <span style="position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--mid);">%</span>
+        </div>
+      </div>
+      <div class="field">
+        <label>ベトナム（%）</label>
+        <div style="position:relative;">
+          <input type="number" id="fee-vn" placeholder="6" inputmode="decimal" step="0.01" style="padding-right:30px;">
+          <span style="position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--mid);">%</span>
+        </div>
+      </div>
+    </div>
+    <button class="add-btn" onclick="saveFeeSettings()">手数料を保存する</button>
+    <div id="fee-status" style="margin-top:10px;font-size:12px;text-align:center;color:var(--mid);"></div>
+  </div>
+
   <div class="card">
     <div class="card-title">AI設定（Gemini API）</div>
     <div class="field" style="margin-bottom:12px;">
@@ -683,9 +756,25 @@
 
 <script>
 // ── DATA ──
-const SLS_PLUS = 1.75;
-const PAYONEER = 2.0;
-const saleFeeByMarket = { tw:6, th:6, ph:6, my:6, vn:6, sg:7 };
+const DEFAULT_SLS = 1.75;
+const DEFAULT_PAYONEER = 2.0;
+const DEFAULT_SALE_FEE = { tw:6, th:6, ph:6, my:6, vn:6, sg:7 };
+
+function loadFees() {
+  const saved = JSON.parse(localStorage.getItem('fee_settings') || '{}');
+  return {
+    sls:     parseFloat(saved.sls)     || DEFAULT_SLS,
+    payoneer:parseFloat(saved.payoneer)|| DEFAULT_PAYONEER,
+    tw:      parseFloat(saved.tw)      || DEFAULT_SALE_FEE.tw,
+    th:      parseFloat(saved.th)      || DEFAULT_SALE_FEE.th,
+    ph:      parseFloat(saved.ph)      || DEFAULT_SALE_FEE.ph,
+    my:      parseFloat(saved.my)      || DEFAULT_SALE_FEE.my,
+    vn:      parseFloat(saved.vn)      || DEFAULT_SALE_FEE.vn,
+    sg:      parseFloat(saved.sg)      || DEFAULT_SALE_FEE.sg,
+  };
+}
+
+let fees = loadFees();
 const shippingByMarket = {
   tw:[250,320,450,700,1100], th:[300,380,520,800,1300],
   ph:[350,430,600,900,1400], my:[300,380,520,800,1300],
@@ -694,6 +783,25 @@ const shippingByMarket = {
 const marketNames = { tw:'台湾', th:'タイ', ph:'フィリピン', my:'マレーシア', vn:'ベトナム', sg:'シンガポール' };
 
 let exchangeRates = { sg:0.011, tw:0.22, th:0.24, my:0.031, ph:0.38, vn:165.0 };
+
+async function updateExchangeRates() {
+  try {
+    const resp = await fetch('https://api.frankfurter.app/latest?from=JPY&to=SGD,MYR,THB,TWD,PHP,VND');
+    const data = await resp.json();
+    if (data && data.rates) {
+      exchangeRates.sg = data.rates.SGD;
+      exchangeRates.tw = data.rates.TWD;
+      exchangeRates.th = data.rates.THB;
+      exchangeRates.my = data.rates.MYR;
+      exchangeRates.ph = data.rates.PHP;
+      exchangeRates.vn = data.rates.VND;
+      console.log('為替レート更新:', exchangeRates);
+      renderList();
+    }
+  } catch(e) {
+    console.log('為替レート取得失敗、固定レートを使用');
+  }
+}
 
 let products = JSON.parse(localStorage.getItem('shopee_products') || '[]');
 let targetMargin = parseFloat(localStorage.getItem('target_margin') || '20');
@@ -706,13 +814,14 @@ function save() {
 
 function calcProfit(p) {
   const shipping = shippingByMarket[p.market][p.weight];
-  const saleFeeRate = p.isNew ? 0 : saleFeeByMarket[p.market];
+  const saleFeeRate = p.isNew ? 0 : fees[p.market];
   const saleFee  = p.price * saleFeeRate / 100;
-  const slsFee   = p.price * SLS_PLUS / 100;
-  const payoneer = p.price * PAYONEER / 100;
+  const slsFee   = p.price * fees.sls / 100;
+  const payoneer = p.price * fees.payoneer / 100;
   const profit   = p.price - p.cost - shipping - saleFee - slsFee - payoneer;
   const margin   = (profit / p.price) * 100;
-  return { profit, margin, shipping, saleFee, slsFee, payoneer };
+  const localPrice = p.price * exchangeRates[p.market];
+  return { profit, margin, shipping, saleFee, slsFee, payoneer, localPrice };
 }
 
 function fmt(n) { return '¥' + Math.abs(Math.round(n)).toLocaleString(); }
@@ -728,7 +837,7 @@ function switchTab(tab) {
   document.getElementById('panel-' + tab).classList.add('active');
   if (tab === 'list') renderList();
   if (tab === 'summary') renderSummary();
-  if (tab === 'settings') { loadKeyToInput(); loadTargetMargin(); }
+  if (tab === 'settings') { loadKeyToInput(); loadTargetMargin(); loadFeeToInput(); }
   if (tab === 'research') {
     var tabIds2 = ['add','list','research','summary','settings'];
     var tabEls2 = document.querySelectorAll('.tab');
@@ -765,6 +874,40 @@ function toggleKeyVisibility() {
   } else {
     inp.type = 'password'; btn.textContent = '表示';
   }
+}
+
+// ── FEE SETTINGS ──
+function saveFeeSettings() {
+  const saved = {
+    sls:      document.getElementById('fee-sls').value      || DEFAULT_SLS,
+    payoneer: document.getElementById('fee-payoneer').value || DEFAULT_PAYONEER,
+    tw:       document.getElementById('fee-tw').value       || DEFAULT_SALE_FEE.tw,
+    th:       document.getElementById('fee-th').value       || DEFAULT_SALE_FEE.th,
+    ph:       document.getElementById('fee-ph').value       || DEFAULT_SALE_FEE.ph,
+    my:       document.getElementById('fee-my').value       || DEFAULT_SALE_FEE.my,
+    vn:       document.getElementById('fee-vn').value       || DEFAULT_SALE_FEE.vn,
+    sg:       document.getElementById('fee-sg').value       || DEFAULT_SALE_FEE.sg,
+  };
+  try { localStorage.setItem('fee_settings', JSON.stringify(saved)); } catch(e) {}
+  fees = loadFees();
+  renderList();
+  renderSummary();
+  const st = document.getElementById('fee-status');
+  st.innerHTML = '✅ 保存しました！利益計算に反映されました';
+  st.style.color = 'var(--green)';
+  setTimeout(() => { st.textContent = ''; }, 2000);
+}
+
+function loadFeeToInput() {
+  const saved = JSON.parse(localStorage.getItem('fee_settings') || '{}');
+  document.getElementById('fee-sls').value      = saved.sls      || '';
+  document.getElementById('fee-payoneer').value = saved.payoneer || '';
+  document.getElementById('fee-tw').value       = saved.tw       || '';
+  document.getElementById('fee-sg').value       = saved.sg       || '';
+  document.getElementById('fee-th').value       = saved.th       || '';
+  document.getElementById('fee-my').value       = saved.my       || '';
+  document.getElementById('fee-ph').value       = saved.ph       || '';
+  document.getElementById('fee-vn').value       = saved.vn       || '';
 }
 
 // ── TARGET MARGIN ──
@@ -827,6 +970,9 @@ function renderList() {
     const margin = Math.round(c.margin * 10) / 10;
     const belowTarget = margin < targetMargin;
     let chipClass = margin >= 15 ? 'good' : margin >= 5 ? 'ok' : 'bad';
+    const unitMap = { sg:'S$', tw:'NT$', th:'฿', my:'RM', ph:'₱', vn:'₫' };
+    const unit = unitMap[p.market] || '';
+    const localPrice = c.localPrice ? `${unit}${Math.round(c.localPrice).toLocaleString()}` : '-';
     const urlHtml = p.url ? `<a href="${p.url}" target="_blank" style="font-size:11px;color:var(--orange);display:block;margin-top:6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">🔗 仕入れ先を開く</a>` : '';
     const warningHtml = belowTarget ? `<div style="font-size:11px;color:var(--red);background:rgba(239,68,68,0.08);border-radius:6px;padding:5px 8px;margin-top:6px;">⚠️ 目標利益率（${targetMargin}%）を下回っています</div>` : '';
     return `
@@ -840,9 +986,9 @@ function renderList() {
           <div class="num-box-label">仕入れ</div>
           <div class="num-box-val">${fmt(p.cost)}</div>
         </div>
-        <div class="num-box">
-          <div class="num-box-label">販売</div>
-          <div class="num-box-val">${fmt(p.price)}</div>
+        <div class="num-box" style="border:1px solid var(--orange);background:var(--orange-pale);">
+          <div class="num-box-label" style="color:var(--orange);font-weight:700;">現地価格</div>
+          <div class="num-box-val" style="color:var(--orange);font-size:12px;">${localPrice}</div>
         </div>
         <div class="num-box">
           <div class="num-box-label">送料</div>
@@ -1157,6 +1303,7 @@ async function runResearch() {
 // init
 renderList();
 renderSummary();
+updateExchangeRates();
 
 window.switchTab = switchTab;
 window.addProduct = addProduct;
@@ -1172,6 +1319,7 @@ window.copyField = copyField;
 window.copyAllListing = copyAllListing;
 window.saveApiKey = saveApiKey;
 window.saveTargetMargin = saveTargetMargin;
+window.saveFeeSettings = saveFeeSettings;
 window.toggleKeyVisibility = toggleKeyVisibility;
 </script>
 </body>
