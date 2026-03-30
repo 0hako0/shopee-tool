@@ -503,8 +503,64 @@
 
 <!-- ── RESEARCH PANEL ── -->
 <div class="panel" id="panel-research">
+
+  <!-- Shopee価格リサーチ -->
   <div class="card">
-    <div class="card-title">マーケットリサーチ</div>
+    <div class="card-title">🔎 Shopee価格リサーチ</div>
+    <div style="font-size:11px;color:var(--mid);margin-bottom:12px;">商品名を入れて各国Shopeeの販売価格を確認できます</div>
+    <div class="field form-full" style="margin-bottom:8px;">
+      <label>商品名（日本語）</label>
+      <input type="text" id="search-keyword" placeholder="例：ルック 防カビくん煙剤">
+    </div>
+    <div class="field form-full" style="margin-bottom:8px;">
+      <label>英語キーワード（台湾・シンガポール・マレーシア・フィリピン向け）</label>
+      <input type="text" id="search-keyword-en" placeholder="例：Look Mold Prevention Smoke">
+    </div>
+    <div class="field form-full" style="margin-bottom:12px;">
+      <label>中国語キーワード（台湾向け）</label>
+      <input type="text" id="search-keyword-zh" placeholder="例：防霉煙霧劑">
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+      <button onclick="openShopee('tw')" style="padding:10px;background:var(--orange-pale);color:var(--orange);border:none;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer;">🛍 台湾で検索</button>
+      <button onclick="openShopee('sg')" style="padding:10px;background:var(--orange-pale);color:var(--orange);border:none;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer;">🛍 シンガポールで検索</button>
+      <button onclick="openShopee('th')" style="padding:10px;background:var(--orange-pale);color:var(--orange);border:none;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer;">🛍 タイで検索</button>
+      <button onclick="openShopee('my')" style="padding:10px;background:var(--orange-pale);color:var(--orange);border:none;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer;">🛍 マレーシアで検索</button>
+      <button onclick="openShopee('ph')" style="padding:10px;background:var(--orange-pale);color:var(--orange);border:none;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer;">🛍 フィリピンで検索</button>
+      <button onclick="openShopee('vn')" style="padding:10px;background:var(--orange-pale);color:var(--orange);border:none;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer;">🛍 ベトナムで検索</button>
+    </div>
+    <p class="tip" style="margin-top:8px;">台湾は中国語→英語→日本語の優先順で検索します</p>
+  </div>
+
+  <!-- 為替計算機 -->
+  <div class="card">
+    <div class="card-title">💱 為替計算機</div>
+    <div class="form-grid" style="margin-bottom:10px;">
+      <div class="field">
+        <label>金額（円）</label>
+        <input type="number" id="calc-jpy" placeholder="1500" inputmode="numeric" oninput="calcExchange()">
+      </div>
+      <div class="field">
+        <label>マーケット</label>
+        <select id="calc-market" onchange="calcExchange()">
+          <option value="tw">台湾 NT$</option>
+          <option value="sg">シンガポール S$</option>
+          <option value="th">タイ ฿</option>
+          <option value="my">マレーシア RM</option>
+          <option value="ph">フィリピン ₱</option>
+          <option value="vn">ベトナム ₫</option>
+        </select>
+      </div>
+    </div>
+    <div id="calc-result" style="display:none;background:var(--orange-pale);border-radius:10px;padding:14px;text-align:center;">
+      <div style="font-size:11px;color:var(--mid);margin-bottom:4px;">換算結果</div>
+      <div id="calc-value" style="font-size:24px;font-weight:700;color:var(--orange);font-family:'DM Mono',monospace;"></div>
+      <div id="calc-rate" style="font-size:11px;color:var(--mid);margin-top:4px;"></div>
+    </div>
+  </div>
+
+  <!-- AIリサーチ -->
+  <div class="card">
+    <div class="card-title">🤖 AIマーケットリサーチ</div>
     <div class="form-grid">
       <div class="field">
         <label>国・マーケット</label>
@@ -538,6 +594,18 @@
       <div class="card-title" id="research-title">調査結果</div>
       <div id="research-content" style="font-size:13px;line-height:1.9;color:var(--dark);"></div>
     </div>
+  </div>
+
+  <!-- ── TREND CALENDAR ── -->
+  <div class="card">
+    <div class="card-title">🛒 今月のおすすめジャンル</div>
+    <div id="monthly-recommend"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📅 セール・トレンドカレンダー</div>
+    <div style="font-size:11px;color:var(--mid);margin-bottom:12px;">無在庫でも事前に出品準備・価格調整のタイミングがわかります</div>
+    <div id="calendar-list"></div>
   </div>
 </div>
 
@@ -883,6 +951,8 @@ function switchTab(tab) {
     for (var k = 0; k < tabEls2.length; k++) {
       tabEls2[k].classList.toggle('active', tabIds2[k] === tab);
     }
+    renderCalendar();
+    renderMonthlyRecommend();
   }
 }
 
@@ -1284,6 +1354,167 @@ function closeModalOutside(e) {
   if (e.target === document.getElementById('modal')) closeModal();
 }
 
+// ── SHOPEE SEARCH ──
+const shopeeUrls = {
+  tw: 'https://shopee.tw/search?keyword=',
+  sg: 'https://shopee.sg/search?keyword=',
+  th: 'https://shopee.co.th/search?keyword=',
+  my: 'https://shopee.com.my/search?keyword=',
+  ph: 'https://shopee.ph/search?keyword=',
+  vn: 'https://shopee.vn/search?keyword=',
+};
+
+// マーケットごとのキーワード優先順位
+// tw: 中国語→英語→日本語
+// sg/my/ph: 英語→日本語
+// th/vn: 英語→日本語
+function getKeyword(market) {
+  const ja = document.getElementById('search-keyword').value.trim();
+  const en = document.getElementById('search-keyword-en').value.trim();
+  const zh = document.getElementById('search-keyword-zh').value.trim();
+  if (!ja && !en && !zh) { alert('商品名を入力してください'); return null; }
+  if (market === 'tw') return zh || en || ja;
+  return en || ja;
+}
+
+function openShopee(market) {
+  const keyword = getKeyword(market);
+  if (!keyword) return false;
+  const url = shopeeUrls[market] + encodeURIComponent(keyword);
+  window.open(url, '_blank');
+  return false;
+}
+
+// ── EXCHANGE CALCULATOR ──
+function calcExchange() {
+  const jpy = parseFloat(document.getElementById('calc-jpy').value);
+  const market = document.getElementById('calc-market').value;
+  const resultEl = document.getElementById('calc-result');
+  const valueEl = document.getElementById('calc-value');
+  const rateEl = document.getElementById('calc-rate');
+
+  if (!jpy || isNaN(jpy)) { resultEl.style.display = 'none'; return; }
+
+  const rate = exchangeRates[market];
+  const converted = jpy * rate;
+  const unitMap = { tw:'NT$', sg:'S$', th:'฿', my:'RM', ph:'₱', vn:'₫' };
+  const unit = unitMap[market];
+
+  const fmt = market === 'vn'
+    ? Math.round(converted).toLocaleString()
+    : (converted < 100 ? converted.toFixed(2) : Math.round(converted).toLocaleString());
+
+  valueEl.textContent = unit + ' ' + fmt;
+  rateEl.textContent = `¥1 = ${rate < 1 ? rate.toFixed(4) : rate.toFixed(2)} ${unit}（自動取得レート）`;
+  resultEl.style.display = 'block';
+}
+
+// ── TREND CALENDAR ──
+const trendEvents = [
+  // 毎年固定イベント
+  { month:1,  day:1,  name:'元旦セール', markets:['台湾','シンガポール','マレーシア'], tags:['全般'], tip:'新年向けギフト・生活用品が狙い目' },
+  { month:1,  day:25, name:'旧正月（春節）', markets:['台湾','シンガポール','マレーシア','ベトナム'], tags:['ギフト','掃除用品','食品'], tip:'家の掃除・新生活グッズが売れる。2〜3週前から準備を' },
+  { month:2,  day:14, name:'バレンタインデー', markets:['台湾','シンガポール','フィリピン','タイ'], tags:['美容','ギフト'], tip:'コスメ・スキンケアのギフトセットが人気' },
+  { month:4,  day:1,  name:'ソンクラーン（タイ正月）', markets:['タイ'], tags:['防水','アウトドア'], tip:'水かけ祭り。防水グッズ・アウトドア用品が需要増' },
+  { month:4,  day:15, name:'Shopee 4.15セール', markets:['全マーケット'], tags:['全般'], tip:'プラットフォーム全体セール。目玉価格商品を準備' },
+  { month:5,  day:5,  name:'Shopee 5.5セール', markets:['全マーケット'], tags:['全般'], tip:'母の日前後と重なる。スキンケア・キッチン用品が狙い目' },
+  { month:5,  day:12, name:'母の日', markets:['台湾','シンガポール','フィリピン','マレーシア'], tags:['美容','ギフト','キッチン'], tip:'コスメ・キッチン用品のギフト需要が高まる' },
+  { month:6,  day:6,  name:'Shopee 6.6セール', markets:['全マーケット'], tags:['全般'], tip:'ミッドイヤーセール。夏向け商品・健康グッズが好調' },
+  { month:6,  day:18, name:'父の日', markets:['台湾','シンガポール','フィリピン'], tags:['Health','アウトドア'], tip:'男性向けグッズ・スポーツ用品の需要あり' },
+  { month:7,  day:7,  name:'Shopee 7.7セール', markets:['全マーケット'], tags:['全般'], tip:'夏のミッドセール。日焼け止め・冷感グッズが人気' },
+  { month:8,  day:8,  name:'Shopee 8.8セール', markets:['全マーケット'], tags:['全般'], tip:'大型セール。在庫切れに注意（無在庫は仕入れ確認を）' },
+  { month:9,  day:9,  name:'Shopee 9.9スーパーショッピングデー', markets:['全マーケット'], tags:['全般'], tip:'年間最大級セールの一つ。2週前から出品準備開始推奨' },
+  { month:10, day:10, name:'Shopee 10.10セール', markets:['全マーケット'], tags:['全般'], tip:'11.11への助走。人気商品を早めにリストアップ' },
+  { month:10, day:31, name:'ハロウィン', markets:['台湾','シンガポール','フィリピン'], tags:['雑貨','コスメ'], tip:'仮装・コスメ・お菓子関連が需要増' },
+  { month:11, day:11, name:'11.11 ショッピングデー（最大セール）', markets:['全マーケット'], tags:['全般'], tip:'年間最大のビッグセール！1ヶ月前から出品・価格設定の準備を。無在庫でも仕入れ先の在庫確認必須' },
+  { month:12, day:12, name:'12.12 年末大セール', markets:['全マーケット'], tags:['全般'], tip:'年末の大型セール。クリスマス需要と重なりギフト系が売れる' },
+  { month:12, day:25, name:'クリスマス', markets:['台湾','シンガポール','フィリピン','マレーシア'], tags:['ギフト','雑貨'], tip:'プレゼント需要。ギフト向け日本製品が好評' },
+];
+
+const monthlyRecommends = {
+  1:  { theme:'新年・冬の生活', items:['防寒グッズ','加湿器','掃除用品','日用品まとめ買い'], reason:'新年の新生活スタートと旧正月準備が重なる。家の掃除・整理グッズが需要増' },
+  2:  { theme:'バレンタイン・旧正月', items:['スキンケア','コスメ','ギフトセット','入浴剤'], reason:'バレンタインのプレゼント需要とアジア圏の旧正月ギフト需要が重なる' },
+  3:  { theme:'新生活・春支度', items:['収納グッズ','キッチン用品','文具','アロマ'], reason:'台湾・東南アジアでも新学期・新生活シーズン。整理整頓グッズが人気' },
+  4:  { theme:'春・アウトドア', items:['日焼け止め','虫除け','アウトドア用品','防水グッズ'], reason:'ソンクラーン（タイ）・暑さ対策シーズン。日本の日焼け止めは海外で高評価' },
+  5:  { theme:'母の日・初夏', items:['スキンケア','ハンドクリーム','キッチン雑貨','エコ用品'], reason:'母の日ギフト需要がピーク。日本製コスメ・キッチン用品がプレゼントに人気' },
+  6:  { theme:'梅雨・夏準備', items:['除湿剤','防カビグッズ','冷感タオル','制汗グッズ'], reason:'東南アジアの雨季・高温多湿な季節。日本の防カビ・除湿グッズが刺さる' },
+  7:  { theme:'真夏・紫外線対策', items:['日焼け止め','冷感グッズ','水分補給グッズ','虫除け'], reason:'最も暑い時期。日本製UVケア商品は品質の高さで差別化できる' },
+  8:  { theme:'8.8セール・夏本番', items:['健康グッズ','美容家電','スポーツ用品','ダイエット用品'], reason:'8.8ビッグセール。価格競争になりやすいが日本製ブランドは強み' },
+  9:  { theme:'9.9スーパーセール', items:['全ジャンル','日用品まとめ','スキンケア','家電'], reason:'年間最大級セールの一つ。多ジャンルで需要が爆発。1ヶ月前から仕入れ先確認を' },
+  10: { theme:'秋・ハロウィン', items:['ボディケア','保湿クリーム','雑貨','コスメ'], reason:'乾燥シーズン突入。保湿系スキンケアの需要が上がる。ハロウィン需要も' },
+  11: { theme:'11.11 最大セール', items:['全ジャンル','高単価商品','セット販売','限定品'], reason:'年間最大のショッピングデー。出品数を増やして多くの注文に備える準備を' },
+  12: { theme:'12.12・クリスマス・年末', items:['ギフトセット','雑貨','スキンケア','掃除用品'], reason:'クリスマスギフトと12.12セール、年末大掃除需要が重なる最高の月' },
+};
+
+function renderMonthlyRecommend() {
+  const el = document.getElementById('monthly-recommend');
+  if (!el) return;
+  const month = new Date().getMonth() + 1;
+  const rec = monthlyRecommends[month];
+  if (!rec) return;
+
+  el.innerHTML = `
+    <div style="margin-bottom:10px;">
+      <span style="font-size:12px;font-weight:700;color:var(--orange);">${month}月のテーマ：${rec.theme}</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;">
+      ${rec.items.map(item => `<span style="background:var(--orange-pale);color:var(--orange);font-size:12px;font-weight:700;padding:4px 10px;border-radius:20px;">${item}</span>`).join('')}
+    </div>
+    <div style="font-size:12px;color:var(--mid);background:var(--light);border-radius:8px;padding:8px 10px;line-height:1.7;">
+      💡 ${rec.reason}
+    </div>
+  `;
+}
+
+function renderCalendar() {
+  const el = document.getElementById('calendar-list');
+  if (!el) return;
+  const now = new Date();
+  const currentMonth = now.getMonth() + 1;
+  const currentDay = now.getDate();
+
+  // 今日以降180日分のイベントを抽出・ソート
+  const upcoming = [];
+  for (let offset = 0; offset <= 180; offset++) {
+    const d = new Date(now);
+    d.setDate(d.getDate() + offset);
+    const m = d.getMonth() + 1;
+    const day = d.getDate();
+    trendEvents.forEach(ev => {
+      if (ev.month === m && ev.day === day) {
+        upcoming.push({ ...ev, date: d, daysLeft: offset });
+      }
+    });
+  }
+
+  if (upcoming.length === 0) {
+    el.innerHTML = '<div style="text-align:center;color:var(--mid);font-size:13px;padding:16px;">今後180日間の主要イベントはありません</div>';
+    return;
+  }
+
+  el.innerHTML = upcoming.map(ev => {
+    const isToday = ev.daysLeft === 0;
+    const isSoon = ev.daysLeft <= 14;
+    const urgency = isToday ? '#EF4444' : isSoon ? '#F59E0B' : 'var(--border)';
+    const urgencyBg = isToday ? 'rgba(239,68,68,0.06)' : isSoon ? 'rgba(245,158,11,0.06)' : 'var(--white)';
+    const dateStr = `${ev.date.getMonth()+1}/${ev.date.getDate()}`;
+    const daysStr = isToday ? '🔴 今日！' : ev.daysLeft <= 7 ? `🟡 あと${ev.daysLeft}日` : `あと${ev.daysLeft}日`;
+    const marketsStr = ev.markets.join('・');
+    const tagsStr = ev.tags.map(t => `<span style="display:inline-block;background:var(--orange-pale);color:var(--orange);font-size:10px;padding:1px 6px;border-radius:4px;margin-right:3px;">${t}</span>`).join('');
+
+    return `
+    <div style="border:1.5px solid ${urgency};border-radius:10px;padding:12px;margin-bottom:10px;background:${urgencyBg};">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;">
+        <div style="font-size:13px;font-weight:700;color:var(--dark);flex:1;">${ev.name}</div>
+        <div style="font-size:11px;color:var(--mid);white-space:nowrap;margin-left:8px;">${dateStr}（${daysStr}）</div>
+      </div>
+      <div style="font-size:11px;color:var(--mid);margin-bottom:6px;">📍 ${marketsStr}</div>
+      <div style="margin-bottom:6px;">${tagsStr}</div>
+      <div style="font-size:11px;color:var(--dark);background:var(--light);border-radius:6px;padding:6px 8px;">💡 ${ev.tip}</div>
+    </div>`;
+  }).join('');
+}
+
 // ── RESEARCH ──
 async function runResearch() {
   const apiKey = localStorage.getItem('gemini_api_key') || '';
@@ -1344,6 +1575,8 @@ renderList();
 renderSummary();
 updateExchangeRates();
 
+window.openShopee = openShopee;
+window.calcExchange = calcExchange;
 window.switchTab = switchTab;
 window.addProduct = addProduct;
 window.deleteProduct = deleteProduct;
