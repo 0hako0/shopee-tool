@@ -571,35 +571,41 @@
     </div>
   </div>
 
-  <!-- AIリサーチ -->
+  <!-- AIリサーチ + おすすめジャンル統合 -->
   <div class="card">
     <div class="card-title">🤖 AIマーケットリサーチ</div>
-    <div class="form-grid">
-      <div class="field">
-        <label>国・マーケット</label>
-        <select id="r-market">
-          <option value="台湾">台湾</option>
-          <option value="タイ">タイ</option>
-          <option value="フィリピン">フィリピン</option>
-          <option value="マレーシア">マレーシア</option>
-          <option value="ベトナム">ベトナム</option>
-          <option value="シンガポール">シンガポール</option>
-        </select>
-      </div>
-      <div class="field">
-        <label>カテゴリー</label>
-        <select id="r-category">
-          <option value="Home & Living">Home &amp; Living</option>
-          <option value="Health">Health</option>
-          <option value="Beauty">Beauty</option>
-          <option value="Food & Beverages">Food &amp; Beverages</option>
-          <option value="Hobbies & Collections">Hobbies &amp; Collections</option>
-          <option value="Sports & Outdoors">Sports &amp; Outdoors</option>
-        </select>
-      </div>
+    <div class="field" style="margin-bottom:12px;">
+      <label>国・マーケット</label>
+      <select id="r-market" onchange="renderMonthlyRecommend()">
+        <option value="台湾">台湾</option>
+        <option value="タイ">タイ</option>
+        <option value="フィリピン">フィリピン</option>
+        <option value="マレーシア">マレーシア</option>
+        <option value="ベトナム">ベトナム</option>
+        <option value="シンガポール">シンガポール</option>
+      </select>
     </div>
-    <button class="add-btn" onclick="runResearch()" id="research-btn">🔍 売れ筋を調べる</button>
-    <div style="font-size:11px;color:var(--mid);margin-top:8px;text-align:center;">※ Gemini APIキーが必要です・1回1リクエスト消費</div>
+
+    <div style="font-size:11px;font-weight:700;color:var(--dark);margin-bottom:8px;">今月のおすすめジャンル <span style="font-weight:400;color:var(--mid);">（タップでAI分析）</span></div>
+    <div id="monthly-recommend"></div>
+
+    <div style="margin-top:12px;border-top:1px solid var(--border);padding-top:12px;">
+      <div style="font-size:11px;font-weight:700;color:var(--dark);margin-bottom:8px;">カテゴリーを指定して調べる</div>
+      <div class="form-grid" style="margin-bottom:10px;">
+        <div class="field form-full">
+          <select id="r-category">
+            <option value="Home & Living">Home &amp; Living</option>
+            <option value="Health">Health</option>
+            <option value="Beauty">Beauty</option>
+            <option value="Food & Beverages">Food &amp; Beverages</option>
+            <option value="Hobbies & Collections">Hobbies &amp; Collections</option>
+            <option value="Sports & Outdoors">Sports &amp; Outdoors</option>
+          </select>
+        </div>
+      </div>
+      <button class="add-btn" onclick="runResearch()" id="research-btn">🔍 この国×カテゴリーで調べる</button>
+      <div style="font-size:11px;color:var(--mid);margin-top:6px;text-align:center;">※ Gemini APIキーが必要です・1回1リクエスト消費</div>
+    </div>
   </div>
 
   <div id="research-result" style="display:none;">
@@ -610,11 +616,6 @@
   </div>
 
   <!-- ── TREND CALENDAR ── -->
-  <div class="card">
-    <div class="card-title">🛒 今月のおすすめジャンル</div>
-    <div id="monthly-recommend"></div>
-  </div>
-
   <div class="card">
     <div class="card-title">📅 セール・トレンドカレンダー</div>
     <div style="font-size:11px;color:var(--mid);margin-bottom:12px;">無在庫でも事前に出品準備・価格調整のタイミングがわかります</div>
@@ -1528,37 +1529,112 @@ const trendEvents = [
   { month:12, day:25, name:'クリスマス', markets:['台湾','シンガポール','フィリピン','マレーシア'], tags:['ギフト','雑貨'], tip:'プレゼント需要。ギフト向け日本製品が好評' },
 ];
 
-const monthlyRecommends = {
-  1:  { theme:'新年・冬の生活', items:['防寒グッズ','加湿器','掃除用品','日用品まとめ買い'], reason:'新年の新生活スタートと旧正月準備が重なる。家の掃除・整理グッズが需要増' },
-  2:  { theme:'バレンタイン・旧正月', items:['スキンケア','コスメ','ギフトセット','入浴剤'], reason:'バレンタインのプレゼント需要とアジア圏の旧正月ギフト需要が重なる' },
-  3:  { theme:'新生活・春支度', items:['収納グッズ','キッチン用品','文具','アロマ'], reason:'台湾・東南アジアでも新学期・新生活シーズン。整理整頓グッズが人気' },
-  4:  { theme:'春・アウトドア', items:['日焼け止め','虫除け','アウトドア用品','防水グッズ'], reason:'ソンクラーン（タイ）・暑さ対策シーズン。日本の日焼け止めは海外で高評価' },
-  5:  { theme:'母の日・初夏', items:['スキンケア','ハンドクリーム','キッチン雑貨','エコ用品'], reason:'母の日ギフト需要がピーク。日本製コスメ・キッチン用品がプレゼントに人気' },
-  6:  { theme:'梅雨・夏準備', items:['除湿剤','防カビグッズ','冷感タオル','制汗グッズ'], reason:'東南アジアの雨季・高温多湿な季節。日本の防カビ・除湿グッズが刺さる' },
-  7:  { theme:'真夏・紫外線対策', items:['日焼け止め','冷感グッズ','水分補給グッズ','虫除け'], reason:'最も暑い時期。日本製UVケア商品は品質の高さで差別化できる' },
-  8:  { theme:'8.8セール・夏本番', items:['健康グッズ','美容家電','スポーツ用品','ダイエット用品'], reason:'8.8ビッグセール。価格競争になりやすいが日本製ブランドは強み' },
-  9:  { theme:'9.9スーパーセール', items:['全ジャンル','日用品まとめ','スキンケア','家電'], reason:'年間最大級セールの一つ。多ジャンルで需要が爆発。1ヶ月前から仕入れ先確認を' },
-  10: { theme:'秋・ハロウィン', items:['ボディケア','保湿クリーム','雑貨','コスメ'], reason:'乾燥シーズン突入。保湿系スキンケアの需要が上がる。ハロウィン需要も' },
-  11: { theme:'11.11 最大セール', items:['全ジャンル','高単価商品','セット販売','限定品'], reason:'年間最大のショッピングデー。出品数を増やして多くの注文に備える準備を' },
-  12: { theme:'12.12・クリスマス・年末', items:['ギフトセット','雑貨','スキンケア','掃除用品'], reason:'クリスマスギフトと12.12セール、年末大掃除需要が重なる最高の月' },
+// 共通ベース（月別）
+const monthlyBase = {
+  1:  { theme:'新年・旧正月準備',    reason:'新年の新生活スタートと旧正月準備が重なる。家の掃除・整理グッズが需要増', items:['掃除用品','収納ボックス','加湿器','保湿クリーム','日用品まとめ買い','防災グッズ','鍋・調理器具','空気清浄機フィルター','タオルセット','ルームフレグランス'] },
+  2:  { theme:'バレンタイン・旧正月', reason:'バレンタインのプレゼント需要とアジア圏の旧正月ギフト需要が重なる', items:['スキンケア','コスメ','ギフトセット','入浴剤','ハンドクリーム','アイクリーム','美容液','マスクパック','ネイルケア','ルームフレグランス'] },
+  3:  { theme:'新生活・春支度',      reason:'台湾・東南アジアでも新学期・新生活シーズン。整理整頓グッズが人気', items:['収納グッズ','キッチン用品','文具','アロマ','洗濯グッズ','掃除道具','食器','ランチボックス','エコバッグ','インテリア雑貨'] },
+  4:  { theme:'春・暑さ対策',        reason:'ソンクラーン（タイ）・暑さ対策シーズン。日本の日焼け止めは海外で高評価', items:['日焼け止め','虫除け','冷感タオル','携帯扇風機','防水グッズ','UVカットウェア','水筒・ボトル','帽子・日傘','冷却スプレー','スポーツサングラス'] },
+  5:  { theme:'母の日・初夏',        reason:'母の日ギフト需要がピーク。日本製コスメ・キッチン用品がプレゼントに人気', items:['スキンケア','ハンドクリーム','キッチン雑貨','フェイスマスク','美容オイル','アロマキャンドル','入浴剤','ヘアケア','食器・カップ','エコ用品'] },
+  6:  { theme:'雨季・夏準備',        reason:'東南アジアの雨季・高温多湿な季節。日本の防カビ・除湿グッズが刺さる', items:['除湿剤','防カビグッズ','冷感タオル','制汗グッズ','消臭スプレー','防水スプレー','冷感インナー','携帯扇風機','日焼け止め','アイスノン'] },
+  7:  { theme:'真夏・UV対策',        reason:'最も暑い時期。日本製UVケア商品は品質の高さで差別化できる', items:['日焼け止め','冷感グッズ','虫除け','UV美容液','冷感スプレー','水筒・ボトル','冷感マスク','日傘','アフターサンケア','スポーツドリンク'] },
+  8:  { theme:'8.8セール・夏本番',   reason:'8.8ビッグセール。価格競争になりやすいが日本製ブランドは強み', items:['健康グッズ','美容家電','スポーツ用品','ダイエット用品','サプリメント','マッサージグッズ','ヘアアイロン','電動歯ブラシ','フィットネス用品','スキンケアセット'] },
+  9:  { theme:'9.9スーパーセール',   reason:'年間最大級セールの一つ。多ジャンルで需要が爆発。1ヶ月前から仕入れ先確認を', items:['スキンケア','日用品まとめ','キッチン用品','ヘルスケア','美容液','掃除グッズ','収納用品','食品・お菓子','インテリア','ペット用品'] },
+  10: { theme:'秋・乾燥対策',        reason:'乾燥シーズン突入。保湿系スキンケアの需要が上がる。ハロウィン需要も', items:['保湿クリーム','ボディケア','リップケア','ヘアオイル','ハンドマスク','保湿パック','美容オイル','入浴剤','加湿器','コスメ'] },
+  11: { theme:'11.11 最大セール',    reason:'年間最大のショッピングデー。出品数を増やして多くの注文に備える準備を', items:['スキンケアセット','美容家電','キッチン家電','健康食品','ヘアケアセット','サプリメント','収納グッズ','インテリア雑貨','ペット用品','掃除ロボット'] },
+  12: { theme:'12.12・年末・ギフト', reason:'クリスマスギフトと12.12セール、年末大掃除需要が重なる最高の月', items:['ギフトセット','スキンケア','掃除用品','お菓子・食品','アロマグッズ','キッチン用品','タオルセット','入浴剤セット','文具セット','雑貨'] },
 };
+
+// 国別の追加・入れ替えアイテム（各月の先頭に追加して上書き）
+const countryOverrides = {
+  台湾: {
+    1:  ['花粉対策マスク','空気清浄機','保湿スキンケア'],
+    3:  ['花粉症対策','アロマディフューザー','整理収納'],
+    4:  ['桜モチーフ雑貨','UV美容液','花粉対策'],
+    6:  ['台湾茶器','防カビグッズ','除湿剤'],
+    9:  ['中秋節ギフト','台湾限定雑貨','お菓子'],
+    10: ['保湿美容液','漢方系サプリ','防寒インナー'],
+    12: ['防寒グッズ','ホットドリンクグッズ','年末大掃除'],
+  },
+  シンガポール: {
+    1:  ['ギフトセット','中華系雑貨','高級スキンケア'],
+    3:  ['エコグッズ','ミニマルインテリア','オーガニックコスメ'],
+    5:  ['高級コスメ','オーガニック食品','エシカル雑貨'],
+    6:  ['除湿剤','冷感グッズ','虫除けスプレー'],
+    9:  ['高級スキンケアセット','プレミアム日用品','ペット用品'],
+    11: ['プレミアムギフト','美容家電','キッチン家電'],
+  },
+  タイ: {
+    1:  ['お守り・縁起物','仏具関連雑貨','健康食品'],
+    3:  ['虫除けスプレー','防水グッズ','冷感タオル'],
+    4:  ['防水グッズ','冷感スプレー','ソンクラーン関連'],
+    6:  ['防水スプレー','虫除け','熱中症対策グッズ'],
+    7:  ['虫除けパッチ','冷感シート','アウトドア用品'],
+    10: ['美白スキンケア','日焼け止め','冷感グッズ'],
+    12: ['年末ギフト','美容液','マスクパック'],
+  },
+  マレーシア: {
+    1:  ['ハラール対応食品','ギフトセット','日用品'],
+    3:  ['ラマダン準備グッズ','食器','調理器具'],
+    4:  ['ハリラヤギフト','コスメ','スキンケア'],
+    6:  ['除湿剤','虫除け','防カビグッズ'],
+    8:  ['独立記念日ギフト','日用品セット','スキンケア'],
+    10: ['保湿スキンケア','ヘアケア','ボディケア'],
+    12: ['クリスマスギフト','年末掃除グッズ','お菓子'],
+  },
+  フィリピン: {
+    1:  ['サン・ホセ祭り関連','カラフル雑貨','日用品'],
+    5:  ['母の日コスメ','スキンケアギフト','フレグランス'],
+    6:  ['防水グッズ','台風対策用品','防水バッグ'],
+    7:  ['台風対策グッズ','防水スプレー','保存食'],
+    9:  ['美白スキンケア','UV対策','コスメ'],
+    12: ['クリスマスギフト','お菓子','カラフル雑貨'],
+  },
+  ベトナム: {
+    1:  ['テト（旧正月）ギフト','伝統的雑貨','縁起物'],
+    2:  ['テト準備グッズ','掃除用品','ギフトセット'],
+    4:  ['虫除けスプレー','防水グッズ','熱中症対策'],
+    6:  ['雨季対策グッズ','防水用品','除湿剤'],
+    8:  ['夏祭り関連','冷感グッズ','スポーツ用品'],
+    9:  ['中秋節ギフト','お菓子','ランタン雑貨'],
+    12: ['年末ギフト','クリスマス雑貨','スキンケアセット'],
+  },
+};
+
+// 国と月からおすすめアイテムを取得
+function getMonthlyItems(market, month) {
+  const base = monthlyBase[month];
+  const overrides = countryOverrides[market]?.[month] || [];
+  // 国別アイテムを先頭に追加し、重複を除いて10個に
+  const merged = [...new Set([...overrides, ...base.items])].slice(0, 10);
+  return { theme: base.theme, items: merged };
+}
 
 function renderMonthlyRecommend() {
   const el = document.getElementById('monthly-recommend');
   if (!el) return;
   const month = new Date().getMonth() + 1;
-  const rec = monthlyRecommends[month];
+  const market = document.getElementById('r-market')?.value || '台湾';
+  const rec = getMonthlyItems(market, month);
   if (!rec) return;
 
   el.innerHTML = `
-    <div style="margin-bottom:10px;">
-      <span style="font-size:12px;font-weight:700;color:var(--orange);">${month}月のテーマ：${rec.theme}</span>
+    <div style="margin-bottom:8px;">
+      <span style="font-size:12px;font-weight:700;color:var(--orange);">${month}月 ${market}のテーマ：${rec.theme}</span>
     </div>
-    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;">
-      ${rec.items.map(item => `<span style="background:var(--orange-pale);color:var(--orange);font-size:12px;font-weight:700;padding:4px 10px;border-radius:20px;">${item}</span>`).join('')}
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;">
+      ${rec.items.map(item => `
+        <button onclick="runResearchWithGenre('${item}')"
+          style="background:var(--orange-pale);color:var(--orange);font-size:12px;font-weight:700;
+          padding:6px 12px;border-radius:20px;border:1.5px solid var(--orange);cursor:pointer;
+          transition:all 0.15s;"
+          onmouseover="this.style.background='#EE4D2D';this.style.color='white'"
+          onmouseout="this.style.background='var(--orange-pale)';this.style.color='var(--orange)'">
+          ${item}
+        </button>`).join('')}
     </div>
-    <div style="font-size:12px;color:var(--mid);background:var(--light);border-radius:8px;padding:8px 10px;line-height:1.7;">
-      💡 ${rec.reason}
+    <div style="font-size:11px;color:var(--mid);background:var(--light);border-radius:8px;padding:8px 10px;line-height:1.7;">
+      💡 ${monthlyBase[month].reason || ''}
     </div>
   `;
 }
@@ -1613,14 +1689,10 @@ function renderCalendar() {
 }
 
 // ── RESEARCH ──
-async function runResearch() {
+async function doResearch(market, genre) {
   const apiKey = localStorage.getItem('gemini_api_key') || '';
-  if (!apiKey) {
-    alert('設定タブからGemini APIキーを登録してください');
-    return;
-  }
-  const market = document.getElementById('r-market').value;
-  const category = document.getElementById('r-category').value;
+  if (!apiKey) { alert('設定タブからGemini APIキーを登録してください'); return; }
+
   const btn = document.getElementById('research-btn');
   btn.textContent = '調査中...';
   btn.disabled = true;
@@ -1630,15 +1702,17 @@ async function runResearch() {
   const titleEl = document.getElementById('research-title');
   resultEl.style.display = 'none';
 
-  const prompt = `Shopeeの${market}マーケットで、${category}カテゴリーで売れている日本製品について教えてください。
+  const prompt = `あなたはShopee越境ECの専門家です。${market}マーケットで「${genre}」ジャンルの日本製品を無在庫で販売する場合のおすすめ商品を教えてください。
 
-以下の形式で具体的に教えてください：
-1. 今売れている商品TOP3〜5（具体的な商品名・ブランド名）
-2. 価格帯の相場（円換算でいくらくらいか）
-3. 売れているポイント・特徴
-4. 日本のセラーが参入するチャンスがあるニッチな商品
+以下の形式で具体的に5商品程度提示してください：
 
-最新のShopeeのトレンドを基に、できるだけ具体的に教えてください。`;
+【商品名・ブランド名】
+- なぜ${market}で売れるのか（現地の文化・ニーズとの関連）
+- 日本製ならではの強み
+- 想定価格帯（現地通貨・円換算）
+- 競合の少ないニッチなポイント
+
+無在庫ドロップシッピングなので、Amazonや楽天で仕入れられる商品を優先してください。`;
 
   try {
     let resp, data;
@@ -1655,16 +1729,32 @@ async function runResearch() {
       await new Promise(r => setTimeout(r, 10000));
     }
     const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '結果を取得できませんでした';
-
-    titleEl.textContent = market + ' × ' + category + ' の売れ筋';
-    contentEl.innerHTML = text.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/###(.*?)<br>/g, '<div style="font-weight:700;color:var(--orange);margin-top:12px;margin-bottom:4px;">$1</div>').replace(/##(.*?)<br>/g, '<div style="font-weight:700;margin-top:12px;margin-bottom:4px;">$1</div>');
+    titleEl.textContent = `${market} × ${genre} のおすすめ商品`;
+    contentEl.innerHTML = text
+      .replace(/\n/g, '<br>')
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+      .replace(/###(.*?)<br>/g, '<div style="font-weight:700;color:var(--orange);margin-top:14px;margin-bottom:4px;">$1</div>')
+      .replace(/##(.*?)<br>/g, '<div style="font-weight:700;margin-top:12px;margin-bottom:4px;">$1</div>');
     resultEl.style.display = 'block';
+    // 結果までスクロール
+    resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
   } catch(e) {
     alert('調査に失敗しました。APIキーを確認してください。');
   } finally {
-    btn.textContent = '🔍 売れ筋を調べる';
+    btn.textContent = '🔍 この国×カテゴリーで調べる';
     btn.disabled = false;
   }
+}
+
+function runResearch() {
+  const market = document.getElementById('r-market').value;
+  const category = document.getElementById('r-category').value;
+  doResearch(market, category);
+}
+
+function runResearchWithGenre(genre) {
+  const market = document.getElementById('r-market').value;
+  doResearch(market, genre);
 }
 
 // init
@@ -1680,6 +1770,7 @@ window.addProduct = addProduct;
 window.deleteProduct = deleteProduct;
 window.editProduct = editProduct;
 window.runResearch = runResearch;
+window.runResearchWithGenre = runResearchWithGenre;
 window.openModal = openModal;
 window.closeModal = closeModal;
 window.closeModalOutside = closeModalOutside;
