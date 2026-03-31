@@ -30,11 +30,7 @@
     padding: 20px 16px 60px;
   }
 
-  /* ── HEADER ── */
-  header {
-    text-align: center;
-    margin-bottom: 20px;
-  }
+  header { text-align: center; margin-bottom: 20px; }
   .logo-chip {
     display: inline-flex; align-items: center; gap: 6px;
     background: var(--orange); color: white;
@@ -46,7 +42,6 @@
   h1 span { color: var(--orange); }
   .subtitle { font-size: 12px; color: var(--mid); margin-top: 4px; }
 
-  /* ── TABS ── */
   .tabs {
     display: flex; gap: 4px;
     background: var(--white);
@@ -64,22 +59,18 @@
     background: transparent;
     cursor: pointer;
     transition: all 0.2s;
+    -webkit-tap-highlight-color: transparent;
   }
   .tab.active {
     background: #EE4D2D !important;
     color: #ffffff !important;
     box-shadow: 0 2px 8px rgba(238,77,45,0.3);
   }
-  .tab {
-    -webkit-tap-highlight-color: transparent;
-  }
 
-  /* ── PANELS ── */
   .panel { display: none; }
   .panel.active { display: block; animation: fadeIn 0.2s ease; }
   @keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
 
-  /* ── CARD ── */
   .card {
     background: var(--white);
     border-radius: 16px;
@@ -100,7 +91,6 @@
     background: var(--orange); border-radius: 2px;
   }
 
-  /* ── FORM ── */
   .form-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -148,6 +138,47 @@
     transition: all 0.15s;
   }
   .add-btn:active { transform: scale(0.98); opacity: 0.9; }
+
+  /* ── 仕入れ先URL複数入力 ── */
+  .supplier-url-list { margin-bottom: 8px; }
+  .supplier-url-row {
+    display: flex; gap: 6px; margin-bottom: 6px; align-items: center;
+  }
+  .supplier-url-row input {
+    flex: 1;
+    padding: 10px 12px;
+    border: 1.5px solid var(--border);
+    border-radius: 9px;
+    font-size: 13px;
+    font-family: 'DM Mono', monospace;
+    color: var(--dark);
+    background: var(--white);
+    transition: border-color 0.2s;
+  }
+  .supplier-url-row input:focus { outline: none; border-color: var(--orange); }
+  .supplier-url-row input::placeholder { font-size: 11px; color: #bbb; }
+  .url-label-input {
+    width: 80px !important;
+    font-family: 'Noto Sans JP', sans-serif !important;
+    font-size: 12px !important;
+  }
+  .remove-url-btn {
+    width: 30px; height: 30px; flex-shrink: 0;
+    border: 1.5px solid #fecaca;
+    border-radius: 8px;
+    background: #FFF5F5; color: var(--red);
+    font-size: 14px; cursor: pointer; line-height: 1;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .add-url-btn {
+    font-size: 12px; font-weight: 700;
+    font-family: 'Noto Sans JP', sans-serif;
+    color: var(--orange); background: var(--orange-pale);
+    border: 1.5px dashed var(--orange);
+    border-radius: 8px; padding: 7px 12px;
+    cursor: pointer; width: 100%;
+    transition: all 0.15s;
+  }
 
   /* ── PRODUCT LIST ── */
   .empty-state {
@@ -237,6 +268,87 @@
     flex: 0; padding: 8px 14px;
   }
 
+  /* ── 仕入れ先チェックエリア ── */
+  .supplier-check-area {
+    margin-top: 10px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .supplier-check-header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 9px 12px;
+    background: var(--light);
+    cursor: pointer;
+    user-select: none;
+  }
+  .supplier-check-header-left {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 12px; font-weight: 700; color: var(--dark);
+  }
+  .checked-badge {
+    font-size: 10px; font-weight: 700;
+    padding: 2px 8px; border-radius: 10px;
+  }
+  .checked-badge.fresh {
+    background: rgba(34,197,94,0.12); color: var(--green);
+  }
+  .checked-badge.old {
+    background: rgba(245,158,11,0.12); color: var(--yellow);
+  }
+  .checked-badge.never {
+    background: rgba(239,68,68,0.12); color: var(--red);
+  }
+  .supplier-check-body {
+    padding: 10px 12px;
+    display: none;
+  }
+  .supplier-check-body.open { display: block; }
+
+  .supplier-url-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .supplier-url-item:last-child { border-bottom: none; }
+  .supplier-url-name {
+    font-size: 11px; font-weight: 700;
+    color: var(--mid);
+    min-width: 52px;
+  }
+  .supplier-url-link {
+    flex: 1; font-size: 12px; color: var(--orange);
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    text-decoration: none;
+  }
+  .supplier-url-link:hover { text-decoration: underline; }
+
+  .check-done-btn {
+    width: 100%; margin-top: 10px;
+    padding: 9px;
+    background: var(--white);
+    border: 1.5px solid var(--green);
+    border-radius: 8px;
+    font-size: 12px; font-weight: 700;
+    font-family: 'Noto Sans JP', sans-serif;
+    color: var(--green); cursor: pointer;
+    transition: all 0.15s;
+  }
+  .check-done-btn:active { background: rgba(34,197,94,0.08); }
+
+  .no-url-hint {
+    font-size: 12px; color: var(--mid);
+    padding: 6px 0;
+  }
+  .no-url-edit-btn {
+    font-size: 12px; font-weight: 700;
+    color: var(--orange); background: var(--orange-pale);
+    border: 1.5px solid var(--orange);
+    border-radius: 8px; padding: 7px 12px;
+    cursor: pointer; width: 100%; margin-top: 8px;
+    font-family: 'Noto Sans JP', sans-serif;
+  }
+
   /* ── DESCRIPTION MODAL ── */
   .modal-overlay {
     display: none; position: fixed; inset: 0;
@@ -266,18 +378,10 @@
     background: var(--border); border-radius: 4px;
     margin: 0 auto 16px;
   }
-  .modal-title {
-    font-size: 15px; font-weight: 900;
-    margin-bottom: 4px;
-  }
-  .modal-sub {
-    font-size: 12px; color: var(--mid);
-    margin-bottom: 16px;
-  }
+  .modal-title { font-size: 15px; font-weight: 900; margin-bottom: 4px; }
+  .modal-sub { font-size: 12px; color: var(--mid); margin-bottom: 16px; }
 
-  .lang-tabs {
-    display: flex; gap: 4px; margin-bottom: 12px;
-  }
+  .lang-tabs { display: flex; gap: 4px; margin-bottom: 12px; }
   .lang-tab {
     padding: 6px 14px;
     border: 1.5px solid var(--border);
@@ -356,7 +460,6 @@
   .summary-box-val.orange { color: var(--orange); }
   .summary-box-val.green { color: var(--green); }
 
-  /* ── CSV ── */
   .csv-btn {
     width: 100%; padding: 13px;
     background: var(--white);
@@ -415,7 +518,6 @@
   <p class="subtitle">一括管理・利益計算・AI説明文生成</p>
 </header>
 
-<!-- TABS -->
 <div class="tabs">
   <button class="tab active" onclick="switchTab('add')">追加</button>
   <button class="tab" onclick="switchTab('list')">一覧</button>
@@ -481,11 +583,26 @@
           <option value="0">いいえ</option>
         </select>
       </div>
-      <div class="field form-full">
-        <label>仕入れ先URL（メモ）</label>
-        <input type="url" id="f-url" placeholder="https://www.amazon.co.jp/...">
-      </div>
     </div>
+
+    <!-- 仕入れ先URL複数登録 -->
+    <div style="margin-bottom:12px;">
+      <label style="display:block;font-size:11px;font-weight:500;color:var(--mid);margin-bottom:8px;">仕入れ先URL（複数登録可）</label>
+      <div class="supplier-url-list" id="supplier-url-list">
+        <div class="supplier-url-row">
+          <input type="text" class="url-label-input" placeholder="Amazon" value="Amazon">
+          <input type="url" class="url-input" placeholder="https://www.amazon.co.jp/...">
+          <button type="button" class="remove-url-btn" onclick="removeUrlRow(this)">×</button>
+        </div>
+        <div class="supplier-url-row">
+          <input type="text" class="url-label-input" placeholder="楽天" value="楽天">
+          <input type="url" class="url-input" placeholder="https://item.rakuten.co.jp/...">
+          <button type="button" class="remove-url-btn" onclick="removeUrlRow(this)">×</button>
+        </div>
+      </div>
+      <button type="button" class="add-url-btn" onclick="addUrlRow()">＋ 仕入れ先を追加</button>
+    </div>
+
     <button class="add-btn" onclick="addProduct()">商品を追加する</button>
   </div>
   <p class="tip">追加した商品は「一覧」タブで確認できます</p>
@@ -496,15 +613,13 @@
   <div id="product-list">
     <div class="empty-state">
       <div class="icon">📦</div>
-      まだ商品がありません<br>「商品追加」タブから追加してください
+      まだ商品がありません<br>「追加」タブから追加してください
     </div>
   </div>
 </div>
 
 <!-- ── RESEARCH PANEL ── -->
 <div class="panel" id="panel-research">
-
-  <!-- Shopee価格リサーチ -->
   <div class="card">
     <div class="card-title">🔎 Shopee価格リサーチ</div>
     <div style="font-size:11px;color:var(--mid);margin-bottom:12px;">日本語で入力するとAIが自動翻訳して各国Shopeeで検索できます</div>
@@ -544,7 +659,6 @@
     </div>
   </div>
 
-  <!-- 為替計算機 -->
   <div class="card">
     <div class="card-title">💱 為替計算機</div>
     <div class="form-grid" style="margin-bottom:10px;">
@@ -571,7 +685,6 @@
     </div>
   </div>
 
-  <!-- AIリサーチ + おすすめジャンル統合 -->
   <div class="card">
     <div class="card-title">🤖 AIマーケットリサーチ</div>
     <div class="field" style="margin-bottom:12px;">
@@ -585,10 +698,8 @@
         <option value="シンガポール">シンガポール</option>
       </select>
     </div>
-
     <div style="font-size:11px;font-weight:700;color:var(--dark);margin-bottom:8px;">今月のおすすめジャンル <span style="font-weight:400;color:var(--mid);">（タップでAI分析）</span></div>
     <div id="monthly-recommend"></div>
-
     <div style="margin-top:12px;border-top:1px solid var(--border);padding-top:12px;">
       <div style="font-size:11px;font-weight:700;color:var(--dark);margin-bottom:8px;">カテゴリーを指定して調べる</div>
       <div class="form-grid" style="margin-bottom:10px;">
@@ -615,7 +726,6 @@
     </div>
   </div>
 
-  <!-- ── TREND CALENDAR ── -->
   <div class="card">
     <div class="card-title">📅 セール・トレンドカレンダー</div>
     <div style="font-size:11px;color:var(--mid);margin-bottom:12px;">無在庫でも事前に出品準備・価格調整のタイミングがわかります</div>
@@ -645,6 +755,25 @@
         <div class="summary-box-val green" id="s-profit">¥0</div>
       </div>
     </div>
+    <!-- 仕入れ先確認状況サマリー -->
+    <div style="border-top:1px solid var(--border);padding-top:12px;margin-top:4px;">
+      <div style="font-size:11px;font-weight:700;color:var(--dark);margin-bottom:8px;">仕入れ先確認状況</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
+        <div class="summary-box">
+          <div class="summary-box-label" style="color:var(--green);">✅ 確認済み</div>
+          <div class="summary-box-val" id="s-checked" style="font-size:18px;">0</div>
+        </div>
+        <div class="summary-box">
+          <div class="summary-box-label" style="color:var(--yellow);">⚠️ 要再確認</div>
+          <div class="summary-box-val" id="s-stale" style="font-size:18px;">0</div>
+        </div>
+        <div class="summary-box">
+          <div class="summary-box-label" style="color:var(--red);">❌ 未確認</div>
+          <div class="summary-box-val" id="s-unchecked" style="font-size:18px;">0</div>
+        </div>
+      </div>
+      <p class="tip" style="margin-top:6px;">確認済み＝7日以内　要再確認＝7〜30日　未確認＝未設定または30日超</p>
+    </div>
   </div>
   <div class="card">
     <div class="card-title">為替レート <span id="rate-updated" style="font-size:10px;font-weight:400;color:var(--mid);margin-left:6px;">取得中...</span></div>
@@ -656,7 +785,7 @@
       <div class="summary-box"><div class="summary-box-label">フィリピン ₱</div><div class="summary-box-val" id="rate-ph" style="font-size:14px;">-</div></div>
       <div class="summary-box"><div class="summary-box-label">ベトナム ₫</div><div class="summary-box-val" id="rate-vn" style="font-size:14px;">-</div></div>
     </div>
-    <p class="tip" style="margin-top:8px;">¥1 = 各通貨の金額（frankfurter.app より自動取得）</p>
+    <p class="tip" style="margin-top:8px;">¥1 = 各通貨の金額（open.er-api.com より自動取得）</p>
   </div>
   <div class="card">
     <div class="card-title">データ出力</div>
@@ -671,7 +800,6 @@
     <div class="modal-handle"></div>
     <div class="modal-title" id="modal-title">商品説明文</div>
     <div class="modal-sub" id="modal-sub">AIが自動生成します</div>
-
     <div class="lang-tabs">
       <button class="lang-tab active" onclick="switchLang('ja', this)">日本語</button>
       <button class="lang-tab" onclick="switchLang('en', this)">英語</button>
@@ -679,20 +807,13 @@
       <button class="lang-tab" id="tab-th" style="display:none;" onclick="switchLang('th', this)">タイ語</button>
       <button class="lang-tab" id="tab-vn" style="display:none;" onclick="switchLang('vn', this)">ベトナム語</button>
     </div>
-
     <div class="desc-box" id="desc-content">
-      <div class="loading-dots">
-        <span></span><span></span><span></span>
-      </div>
+      <div class="loading-dots"><span></span><span></span><span></span></div>
     </div>
-
     <button class="copy-btn" onclick="copyDesc()">📋 説明文をコピー</button>
-
-    <!-- 出品用データ -->
     <div style="margin-top:16px;border-top:1px solid var(--border);padding-top:16px;">
       <div style="font-size:11px;font-weight:700;color:var(--orange);letter-spacing:0.08em;margin-bottom:10px;">📋 出品用データ一括コピー</div>
       <div style="font-size:11px;color:var(--mid);margin-bottom:10px;line-height:1.6;">セラーセンターに貼り付けるデータをまとめてコピーできます</div>
-
       <div class="listing-field" id="lf-title-en">
         <div class="lf-label">商品タイトル（英語）</div>
         <div class="lf-val" id="lv-title-en">生成中...</div>
@@ -748,10 +869,8 @@
         <div class="lf-val" id="lv-desc-vn" style="white-space:pre-wrap;">生成中...</div>
         <button class="lf-copy" onclick="copyField('lv-desc-vn', this)">コピー</button>
       </div>
-
       <button class="copy-btn" style="background:var(--dark);margin-top:4px;" onclick="copyAllListing()">📦 全データをまとめてコピー</button>
     </div>
-
     <button class="close-btn" onclick="closeModal()">閉じる</button>
   </div>
 </div>
@@ -774,8 +893,7 @@
   <div class="card">
     <div class="card-title">手数料設定</div>
     <div style="font-size:11px;color:var(--mid);margin-bottom:12px;line-height:1.7;">
-      未入力の場合はデフォルト値を使用します。<br>
-      実際の手数料はセラーセンターで確認してください。
+      未入力の場合はデフォルト値を使用します。<br>実際の手数料はセラーセンターで確認してください。
     </div>
     <div style="font-size:11px;font-weight:700;color:var(--dark);margin-bottom:8px;">共通手数料</div>
     <div class="form-grid" style="margin-bottom:12px;">
@@ -796,48 +914,12 @@
     </div>
     <div style="font-size:11px;font-weight:700;color:var(--dark);margin-bottom:8px;">販売手数料（国別）</div>
     <div class="form-grid" style="margin-bottom:12px;">
-      <div class="field">
-        <label>台湾（%）</label>
-        <div style="position:relative;">
-          <input type="number" id="fee-tw" placeholder="6" inputmode="decimal" step="0.01" style="padding-right:30px;">
-          <span style="position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--mid);">%</span>
-        </div>
-      </div>
-      <div class="field">
-        <label>シンガポール（%）</label>
-        <div style="position:relative;">
-          <input type="number" id="fee-sg" placeholder="7" inputmode="decimal" step="0.01" style="padding-right:30px;">
-          <span style="position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--mid);">%</span>
-        </div>
-      </div>
-      <div class="field">
-        <label>タイ（%）</label>
-        <div style="position:relative;">
-          <input type="number" id="fee-th" placeholder="6" inputmode="decimal" step="0.01" style="padding-right:30px;">
-          <span style="position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--mid);">%</span>
-        </div>
-      </div>
-      <div class="field">
-        <label>マレーシア（%）</label>
-        <div style="position:relative;">
-          <input type="number" id="fee-my" placeholder="6" inputmode="decimal" step="0.01" style="padding-right:30px;">
-          <span style="position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--mid);">%</span>
-        </div>
-      </div>
-      <div class="field">
-        <label>フィリピン（%）</label>
-        <div style="position:relative;">
-          <input type="number" id="fee-ph" placeholder="6" inputmode="decimal" step="0.01" style="padding-right:30px;">
-          <span style="position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--mid);">%</span>
-        </div>
-      </div>
-      <div class="field">
-        <label>ベトナム（%）</label>
-        <div style="position:relative;">
-          <input type="number" id="fee-vn" placeholder="6" inputmode="decimal" step="0.01" style="padding-right:30px;">
-          <span style="position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--mid);">%</span>
-        </div>
-      </div>
+      <div class="field"><label>台湾（%）</label><div style="position:relative;"><input type="number" id="fee-tw" placeholder="6" inputmode="decimal" step="0.01" style="padding-right:30px;"><span style="position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--mid);">%</span></div></div>
+      <div class="field"><label>シンガポール（%）</label><div style="position:relative;"><input type="number" id="fee-sg" placeholder="7" inputmode="decimal" step="0.01" style="padding-right:30px;"><span style="position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--mid);">%</span></div></div>
+      <div class="field"><label>タイ（%）</label><div style="position:relative;"><input type="number" id="fee-th" placeholder="6" inputmode="decimal" step="0.01" style="padding-right:30px;"><span style="position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--mid);">%</span></div></div>
+      <div class="field"><label>マレーシア（%）</label><div style="position:relative;"><input type="number" id="fee-my" placeholder="6" inputmode="decimal" step="0.01" style="padding-right:30px;"><span style="position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--mid);">%</span></div></div>
+      <div class="field"><label>フィリピン（%）</label><div style="position:relative;"><input type="number" id="fee-ph" placeholder="6" inputmode="decimal" step="0.01" style="padding-right:30px;"><span style="position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--mid);">%</span></div></div>
+      <div class="field"><label>ベトナム（%）</label><div style="position:relative;"><input type="number" id="fee-vn" placeholder="6" inputmode="decimal" step="0.01" style="padding-right:30px;"><span style="position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--mid);">%</span></div></div>
     </div>
     <button class="add-btn" onclick="saveFeeSettings()">手数料を保存する</button>
     <div id="fee-status" style="margin-top:10px;font-size:12px;text-align:center;color:var(--mid);"></div>
@@ -849,11 +931,7 @@
       <label>Gemini APIキー</label>
       <div style="position:relative;">
         <input type="password" id="gemini-key-input" placeholder="AIza..." style="padding-right:70px;">
-        <button onclick="toggleKeyVisibility()" id="toggle-vis-btn"
-          style="position:absolute;right:10px;top:50%;transform:translateY(-50%);
-          border:none;background:none;font-size:12px;color:var(--mid);cursor:pointer;padding:4px;">
-          表示
-        </button>
+        <button onclick="toggleKeyVisibility()" id="toggle-vis-btn" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);border:none;background:none;font-size:12px;color:var(--mid);cursor:pointer;padding:4px;">表示</button>
       </div>
     </div>
     <button class="add-btn" onclick="saveApiKey()">APIキーを保存する</button>
@@ -902,7 +980,6 @@ let exchangeRates = { sg:0.011, tw:0.22, th:0.24, my:0.031, ph:0.38, vn:165.0 };
 
 async function updateExchangeRates() {
   try {
-    // open.er-api.com はCORS対応の無料為替API
     const resp = await fetch('https://open.er-api.com/v6/latest/JPY');
     const data = await resp.json();
     if (data && data.rates) {
@@ -932,21 +1009,27 @@ function renderRates() {
     if (n === undefined || n === null || isNaN(n)) return '-';
     return n < 1 ? n.toFixed(4) : n.toFixed(2);
   };
-  const el_tw = document.getElementById('rate-tw');
-  const el_sg = document.getElementById('rate-sg');
-  const el_th = document.getElementById('rate-th');
-  const el_my = document.getElementById('rate-my');
-  const el_ph = document.getElementById('rate-ph');
-  const el_vn = document.getElementById('rate-vn');
-  if (el_tw) el_tw.textContent = fmt4(exchangeRates.tw);
-  if (el_sg) el_sg.textContent = fmt4(exchangeRates.sg);
-  if (el_th) el_th.textContent = fmt4(exchangeRates.th);
-  if (el_my) el_my.textContent = fmt4(exchangeRates.my);
-  if (el_ph) el_ph.textContent = fmt4(exchangeRates.ph);
-  if (el_vn) el_vn.textContent = fmt4(exchangeRates.vn);
+  ['tw','sg','th','my','ph','vn'].forEach(k => {
+    const el = document.getElementById('rate-' + k);
+    if (el) el.textContent = fmt4(exchangeRates[k]);
+  });
 }
 
-let products = JSON.parse(localStorage.getItem('shopee_products') || '[]');
+// 既存データを新形式に移行するヘルパー
+function migrateProduct(p) {
+  // 旧 url フィールド → 新 supplier_urls 配列
+  if (!p.supplier_urls) {
+    p.supplier_urls = [];
+    if (p.url) {
+      p.supplier_urls.push({ label: 'リンク', url: p.url });
+      delete p.url;
+    }
+  }
+  if (!p.last_checked) p.last_checked = null;
+  return p;
+}
+
+let products = JSON.parse(localStorage.getItem('shopee_products') || '[]').map(migrateProduct);
 let targetMargin = parseFloat(localStorage.getItem('target_margin') || '20');
 let currentDesc = { ja:'', en:'', zh:'' };
 let currentLang = 'ja';
@@ -970,26 +1053,34 @@ function calcProfit(p) {
 function fmt(n) { return '¥' + Math.abs(Math.round(n)).toLocaleString(); }
 function fmtPct(n) { return Math.round(n*10)/10 + '%'; }
 
+// 最終確認日から状態を判定
+function getCheckStatus(last_checked) {
+  if (!last_checked) return 'never';
+  const days = (Date.now() - new Date(last_checked).getTime()) / (1000 * 60 * 60 * 24);
+  if (days <= 7) return 'fresh';
+  if (days <= 30) return 'old';
+  return 'never';
+}
+
+function getCheckLabel(last_checked) {
+  if (!last_checked) return '未確認';
+  const days = Math.floor((Date.now() - new Date(last_checked).getTime()) / (1000 * 60 * 60 * 24));
+  if (days === 0) return '今日確認済み';
+  if (days <= 7) return days + '日前に確認';
+  if (days <= 30) return days + '日前（要再確認）';
+  return days + '日前（期限切れ）';
+}
+
 // ── TABS ──
 function switchTab(tab) {
-  document.querySelectorAll('.tab').forEach((t,i) => {
-    const tabs = ['add','list','research','summary','settings'];
-    t.classList.toggle('active', tabs[i] === tab);
-  });
+  const tabIds = ['add','list','research','summary','settings'];
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', tabIds[i] === tab));
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   document.getElementById('panel-' + tab).classList.add('active');
   if (tab === 'list') renderList();
   if (tab === 'summary') { renderSummary(); renderRates(); }
   if (tab === 'settings') { loadKeyToInput(); loadTargetMargin(); loadFeeToInput(); }
-  if (tab === 'research') {
-    var tabIds2 = ['add','list','research','summary','settings'];
-    var tabEls2 = document.querySelectorAll('.tab');
-    for (var k = 0; k < tabEls2.length; k++) {
-      tabEls2[k].classList.toggle('active', tabIds2[k] === tab);
-    }
-    renderCalendar();
-    renderMonthlyRecommend();
-  }
+  if (tab === 'research') { renderCalendar(); renderMonthlyRecommend(); }
 }
 
 // ── API KEY ──
@@ -997,28 +1088,25 @@ function saveApiKey() {
   const key = document.getElementById('gemini-key-input').value.trim();
   if (!key) { alert('APIキーを入力してください'); return; }
   try { localStorage.setItem('gemini_api_key', key); } catch(e) {}
-  document.getElementById('key-status').innerHTML = '✅ 保存しました！';
-  document.getElementById('key-status').style.color = 'var(--green)';
-  setTimeout(() => { document.getElementById('key-status').textContent = ''; }, 2000);
+  const st = document.getElementById('key-status');
+  st.innerHTML = '✅ 保存しました！'; st.style.color = 'var(--green)';
+  setTimeout(() => { st.textContent = ''; }, 2000);
 }
 
 function loadKeyToInput() {
   const key = localStorage.getItem('gemini_api_key') || '';
   document.getElementById('gemini-key-input').value = key;
   if (key) {
-    document.getElementById('key-status').innerHTML = '✅ APIキーが設定されています';
-    document.getElementById('key-status').style.color = 'var(--green)';
+    const st = document.getElementById('key-status');
+    st.innerHTML = '✅ APIキーが設定されています'; st.style.color = 'var(--green)';
   }
 }
 
 function toggleKeyVisibility() {
   const inp = document.getElementById('gemini-key-input');
   const btn = document.getElementById('toggle-vis-btn');
-  if (inp.type === 'password') {
-    inp.type = 'text'; btn.textContent = '隠す';
-  } else {
-    inp.type = 'password'; btn.textContent = '表示';
-  }
+  if (inp.type === 'password') { inp.type = 'text'; btn.textContent = '隠す'; }
+  else { inp.type = 'password'; btn.textContent = '表示'; }
 }
 
 // ── FEE SETTINGS ──
@@ -1035,11 +1123,9 @@ function saveFeeSettings() {
   };
   try { localStorage.setItem('fee_settings', JSON.stringify(saved)); } catch(e) {}
   fees = loadFees();
-  renderList();
-  renderSummary();
+  renderList(); renderSummary();
   const st = document.getElementById('fee-status');
-  st.innerHTML = '✅ 保存しました！利益計算に反映されました';
-  st.style.color = 'var(--green)';
+  st.innerHTML = '✅ 保存しました！'; st.style.color = 'var(--green)';
   setTimeout(() => { st.textContent = ''; }, 2000);
 }
 
@@ -1062,14 +1148,59 @@ function saveTargetMargin() {
   targetMargin = val;
   try { localStorage.setItem('target_margin', val); } catch(e) {}
   const st = document.getElementById('margin-status');
-  st.innerHTML = '✅ 保存しました！（目標：' + val + '%）';
-  st.style.color = 'var(--green)';
+  st.innerHTML = '✅ 保存しました！（目標：' + val + '%）'; st.style.color = 'var(--green)';
   setTimeout(() => { st.textContent = ''; }, 2000);
   renderList();
 }
 
 function loadTargetMargin() {
   document.getElementById('target-margin-input').value = targetMargin;
+}
+
+// ── URL ROW HELPERS ──
+function addUrlRow(label, url) {
+  const list = document.getElementById('supplier-url-list');
+  const row = document.createElement('div');
+  row.className = 'supplier-url-row';
+  row.innerHTML = `
+    <input type="text" class="url-label-input" placeholder="名前" value="${label || ''}">
+    <input type="url" class="url-input" placeholder="https://..." value="${url || ''}">
+    <button type="button" class="remove-url-btn" onclick="removeUrlRow(this)">×</button>
+  `;
+  list.appendChild(row);
+}
+
+function removeUrlRow(btn) {
+  const list = document.getElementById('supplier-url-list');
+  if (list.children.length <= 1) { return; }
+  btn.parentElement.remove();
+}
+
+function getSupplierUrls() {
+  const rows = document.querySelectorAll('#supplier-url-list .supplier-url-row');
+  const result = [];
+  rows.forEach(row => {
+    const label = row.querySelector('.url-label-input').value.trim();
+    const url   = row.querySelector('.url-input').value.trim();
+    if (url) result.push({ label: label || 'リンク', url });
+  });
+  return result;
+}
+
+function clearUrlRows() {
+  const list = document.getElementById('supplier-url-list');
+  list.innerHTML = `
+    <div class="supplier-url-row">
+      <input type="text" class="url-label-input" placeholder="Amazon" value="Amazon">
+      <input type="url" class="url-input" placeholder="https://www.amazon.co.jp/...">
+      <button type="button" class="remove-url-btn" onclick="removeUrlRow(this)">×</button>
+    </div>
+    <div class="supplier-url-row">
+      <input type="text" class="url-label-input" placeholder="楽天" value="楽天">
+      <input type="url" class="url-input" placeholder="https://item.rakuten.co.jp/...">
+      <button type="button" class="remove-url-btn" onclick="removeUrlRow(this)">×</button>
+    </div>
+  `;
 }
 
 // ── ADD ──
@@ -1082,21 +1213,20 @@ function addProduct() {
 
   products.push({
     id: Date.now(),
-    name,
-    cost,
-    price,
+    name, cost, price,
     market: document.getElementById('f-market').value,
     weight: parseInt(document.getElementById('f-weight').value),
     category: document.getElementById('f-category').value,
     isNew: document.getElementById('f-new').value === '1',
-    url: document.getElementById('f-url').value.trim(),
+    supplier_urls: getSupplierUrls(),
+    last_checked: null,
   });
   save();
 
   document.getElementById('f-name').value = '';
   document.getElementById('f-cost').value = '';
   document.getElementById('f-price').value = '';
-  document.getElementById('f-url').value = '';
+  clearUrlRows();
 
   const btn = document.querySelector('.add-btn');
   btn.textContent = '✅ 追加しました！';
@@ -1118,8 +1248,30 @@ function renderList() {
     const unitMap = { sg:'S$', tw:'NT$', th:'฿', my:'RM', ph:'₱', vn:'₫' };
     const unit = unitMap[p.market] || '';
     const localPrice = c.localPrice ? `${unit}${Math.round(c.localPrice).toLocaleString()}` : '-';
-    const urlHtml = p.url ? `<a href="${p.url}" target="_blank" style="font-size:11px;color:var(--orange);display:block;margin-top:6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">🔗 仕入れ先を開く</a>` : '';
     const warningHtml = belowTarget ? `<div style="font-size:11px;color:var(--red);background:rgba(239,68,68,0.08);border-radius:6px;padding:5px 8px;margin-top:6px;">⚠️ 目標利益率（${targetMargin}%）を下回っています</div>` : '';
+
+    // 仕入れ先チェックエリア
+    const status = getCheckStatus(p.last_checked);
+    const statusLabel = { fresh:'確認済み', old:'要再確認', never:'未確認' }[status];
+    const badgeClass = status;
+    const checkLabel = getCheckLabel(p.last_checked);
+
+    let supplierBody = '';
+    if (p.supplier_urls && p.supplier_urls.length > 0) {
+      supplierBody = p.supplier_urls.map(s => `
+        <div class="supplier-url-item">
+          <span class="supplier-url-name">${s.label}</span>
+          <a href="${s.url}" target="_blank" class="supplier-url-link">🔗 在庫・価格を確認</a>
+        </div>
+      `).join('');
+      supplierBody += `<button class="check-done-btn" onclick="markChecked(${p.id})">✅ 確認しました（今日の日付で記録）</button>`;
+    } else {
+      supplierBody = `
+        <p class="no-url-hint">仕入れ先URLが登録されていません</p>
+        <button class="no-url-edit-btn" onclick="editProduct(${p.id})">✏️ 編集して追加する</button>
+      `;
+    }
+
     return `
     <div class="product-item">
       <div class="product-header">
@@ -1148,7 +1300,19 @@ function renderList() {
         <div class="margin-chip ${chipClass}">${margin}%</div>
       </div>
       ${warningHtml}
-      ${urlHtml}
+      <div class="supplier-check-area">
+        <div class="supplier-check-header" onclick="toggleCheckArea(this)">
+          <div class="supplier-check-header-left">
+            📦 仕入れ先チェック
+            <span class="checked-badge ${badgeClass}">${statusLabel}</span>
+            <span style="font-size:10px;color:var(--mid);font-weight:400;">${checkLabel}</span>
+          </div>
+          <span style="font-size:11px;color:var(--mid);" class="check-toggle-icon">▼</span>
+        </div>
+        <div class="supplier-check-body">
+          ${supplierBody}
+        </div>
+      </div>
       <div class="product-actions">
         <button class="action-btn ai" onclick="openModal(${p.id})">🤖 説明文生成</button>
         <button class="action-btn" onclick="editProduct(${p.id})" style="border-color:#93c5fd;color:#3b82f6;background:#eff6ff;">✏️ 編集</button>
@@ -1158,11 +1322,25 @@ function renderList() {
   }).join('');
 }
 
-function deleteProduct(id) {
-  products = products.filter(p => p.id !== id);
+function toggleCheckArea(header) {
+  const body = header.nextElementSibling;
+  const icon = header.querySelector('.check-toggle-icon');
+  const isOpen = body.classList.toggle('open');
+  icon.textContent = isOpen ? '▲' : '▼';
+}
+
+function markChecked(id) {
+  const p = products.find(x => x.id === id);
+  if (!p) return;
+  p.last_checked = new Date().toISOString();
   save();
   renderList();
   renderSummary();
+}
+
+function deleteProduct(id) {
+  products = products.filter(p => p.id !== id);
+  save(); renderList(); renderSummary();
 }
 
 // ── EDIT ──
@@ -1176,8 +1354,17 @@ function editProduct(id) {
   document.getElementById('f-weight').value = p.weight;
   document.getElementById('f-category').value = p.category;
   document.getElementById('f-new').value = p.isNew ? '1' : '0';
-  document.getElementById('f-url').value = p.url || '';
-  // 削除してから再追加する形で編集
+
+  // URLリストを復元
+  const list = document.getElementById('supplier-url-list');
+  list.innerHTML = '';
+  const urls = p.supplier_urls || [];
+  if (urls.length === 0) {
+    clearUrlRows();
+  } else {
+    urls.forEach(s => addUrlRow(s.label, s.url));
+  }
+
   products = products.filter(x => x.id !== id);
   save();
   switchTab('add');
@@ -1194,6 +1381,9 @@ function renderSummary() {
     document.getElementById('s-margin').textContent = '-%';
     document.getElementById('s-cost').textContent = '¥0';
     document.getElementById('s-profit').textContent = '¥0';
+    document.getElementById('s-checked').textContent = '0';
+    document.getElementById('s-stale').textContent = '0';
+    document.getElementById('s-unchecked').textContent = '0';
     return;
   }
   const margins = products.map(p => calcProfit(p).margin);
@@ -1205,15 +1395,28 @@ function renderSummary() {
   document.getElementById('s-cost').textContent = fmt(totalCost);
   document.getElementById('s-profit').textContent = (totalProfit < 0 ? '−' : '') + fmt(totalProfit);
   document.getElementById('s-profit').className = 'summary-box-val ' + (totalProfit >= 0 ? 'green' : '');
+
+  // 確認状況集計
+  let checked = 0, stale = 0, unchecked = 0;
+  products.forEach(p => {
+    const s = getCheckStatus(p.last_checked);
+    if (s === 'fresh') checked++;
+    else if (s === 'old') stale++;
+    else unchecked++;
+  });
+  document.getElementById('s-checked').textContent = checked;
+  document.getElementById('s-stale').textContent = stale;
+  document.getElementById('s-unchecked').textContent = unchecked;
 }
 
 // ── CSV ──
 function exportCSV() {
   if (products.length === 0) { alert('商品がありません'); return; }
-  const header = '商品名,マーケット,カテゴリー,仕入れ値,販売価格,送料,利益,利益率\n';
+  const header = '商品名,マーケット,カテゴリー,仕入れ値,販売価格,送料,利益,利益率,最終確認日\n';
   const rows = products.map(p => {
     const c = calcProfit(p);
-    return `"${p.name}",${marketNames[p.market]},"${p.category}",${p.cost},${p.price},${c.shipping},${Math.round(c.profit)},${Math.round(c.margin*10)/10}%`;
+    const checked = p.last_checked ? new Date(p.last_checked).toLocaleDateString('ja-JP') : '未確認';
+    return `"${p.name}",${marketNames[p.market]},"${p.category}",${p.cost},${p.price},${c.shipping},${Math.round(c.profit)},${Math.round(c.margin*10)/10}%,${checked}`;
   }).join('\n');
   const blob = new Blob(['\uFEFF' + header + rows], { type: 'text/csv;charset=utf-8' });
   const url = URL.createObjectURL(blob);
@@ -1234,7 +1437,6 @@ async function openModal(id) {
   currentDesc = { ja:'', en:'', zh:'', th:'', vn:'', title_en:'', title_zh:'', title_th:'', title_vn:'' };
   currentLang = 'ja';
 
-  // タイ/ベトナムタブの表示切替
   document.getElementById('tab-th').style.display = isThaiMarket ? '' : 'none';
   document.getElementById('tab-vn').style.display = isVnMarket   ? '' : 'none';
   document.getElementById('lf-title-th').style.display = isThaiMarket ? '' : 'none';
@@ -1247,14 +1449,12 @@ async function openModal(id) {
   document.getElementById('modal-sub').textContent = 'AIが出品用データを生成中...';
   document.getElementById('desc-content').innerHTML = `<div class="loading-dots"><span></span><span></span><span></span></div>`;
 
-  // 出品フィールドをリセット
   ['lv-title-en','lv-title-zh','lv-title-th','lv-title-vn','lv-desc-ja','lv-desc-en','lv-desc-zh','lv-desc-th','lv-desc-vn'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.textContent = '生成中...';
   });
   document.getElementById('lv-category').textContent = p.category;
   document.getElementById('lv-price').textContent = `¥${p.price.toLocaleString()}`;
-
   document.getElementById('modal').classList.add('open');
 
   const prompt = `あなたはShopeeで${marketNames[p.market]}に日本製品を販売するプロのECセラーです。以下の商品の出品用データを生成してください。
@@ -1276,11 +1476,11 @@ async function openModal(id) {
   "title_zh": "中文商品標題（最多100字，包含「日本」或「日製」，吸引人）",
   ${isThaiMarket ? '"title_th": "ชื่อสินค้าภาษาไทย (ไม่เกิน 100 ตัวอักษร รวมคำว่า ญี่ปุ่น/Japan)," ' : ''}
   ${isVnMarket   ? '"title_vn": "Tên sản phẩm tiếng Việt (tối đa 100 ký tự, bao gồm từ Nhật/Japan)," ' : ''}
-  "ja": "日本語の商品説明文（200〜300文字、商品の特徴・使い方・メリット・日本製の安心感を含めて魅力的に。絵文字を適度に使用）",
-  "en": "English product description for ${marketNames[p.market]} buyers (150-200 words, emphasize Japanese quality and safety, include features and benefits, use some emojis)",
-  "zh": "針對${marketNames[p.market]}買家的中文商品描述（150〜200字，強調日本製品質與安全性，包含特色和優點，適當使用表情符號）"
-  ${isThaiMarket ? ', "th": "คำอธิบายสินค้าภาษาไทยสำหรับผู้ซื้อไทย (150-200 คำ เน้นคุณภาพญี่ปุ่น ใช้ emoji)"' : ''}
-  ${isVnMarket   ? ', "vn": "Mô tả sản phẩm tiếng Việt cho người mua Việt Nam (150-200 từ, nhấn mạnh chất lượng Nhật Bản, dùng emoji)"' : ''}
+  "ja": "日本語の商品説明文（200〜300文字）",
+  "en": "English product description for ${marketNames[p.market]} buyers (150-200 words)",
+  "zh": "針對${marketNames[p.market]}買家的中文商品描述（150〜200字）"
+  ${isThaiMarket ? ', "th": "คำอธิบายสินค้าภาษาไทย (150-200 คำ)"' : ''}
+  ${isVnMarket   ? ', "vn": "Mô tả sản phẩm tiếng Việt (150-200 từ)"' : ''}
 }`;
 
   try {
@@ -1303,7 +1503,7 @@ async function openModal(id) {
       data = await resp.json();
       if (resp.status !== 429) break;
       document.getElementById('modal-sub').textContent = `混雑中です。少し待ってリトライします（${attempt+1}/3）...`;
-      await new Promise(r => setTimeout(r, 10000)); // 10秒待つ
+      await new Promise(r => setTimeout(r, 10000));
     }
     const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
     const clean = text.replace(/```json|```/g, '').trim();
@@ -1313,7 +1513,6 @@ async function openModal(id) {
     document.getElementById('modal-sub').textContent = '生成完了！各項目をコピーして使ってください';
     document.getElementById('desc-content').textContent = currentDesc[currentLang];
 
-    // 出品フィールドを更新
     document.getElementById('lv-title-en').textContent = parsed.title_en || '-';
     document.getElementById('lv-title-zh').textContent = parsed.title_zh || '-';
     document.getElementById('lv-desc-ja').textContent  = parsed.ja || '-';
@@ -1355,15 +1554,9 @@ function copyAllListing() {
     `【タイトル(中)】${currentDesc.title_zh || '-'}`,
     `【カテゴリー】${p.category}`,
     `【販売価格】¥${p.price.toLocaleString()}`,
-    ``,
-    `【説明文・日本語】`,
-    currentDesc.ja || '-',
-    ``,
-    `【説明文・英語】`,
-    currentDesc.en || '-',
-    ``,
-    `【説明文・中国語】`,
-    currentDesc.zh || '-',
+    ``, `【説明文・日本語】`, currentDesc.ja || '-',
+    ``, `【説明文・英語】`, currentDesc.en || '-',
+    ``, `【説明文・中国語】`, currentDesc.zh || '-',
   ].join('\n');
   navigator.clipboard.writeText(text).catch(() => {
     const ta = document.createElement('textarea');
@@ -1380,8 +1573,7 @@ function switchLang(lang, btn) {
   currentLang = lang;
   document.querySelectorAll('.lang-tab').forEach(t => t.classList.remove('active'));
   btn.classList.add('active');
-  const content = currentDesc[lang];
-  document.getElementById('desc-content').textContent = content || '（まだ生成されていません）';
+  document.getElementById('desc-content').textContent = currentDesc[lang] || '（まだ生成されていません）';
 }
 
 function copyDesc() {
@@ -1392,22 +1584,15 @@ function copyDesc() {
     btn.textContent = '✅ コピーしました！';
     setTimeout(() => { btn.textContent = '📋 コピーする'; }, 1500);
   }).catch(() => {
-    // fallback
     const ta = document.createElement('textarea');
-    ta.value = text;
-    document.body.appendChild(ta);
-    ta.select();
-    document.execCommand('copy');
+    ta.value = text; document.body.appendChild(ta);
+    ta.select(); document.execCommand('copy');
     document.body.removeChild(ta);
   });
 }
 
-function closeModal() {
-  document.getElementById('modal').classList.remove('open');
-}
-function closeModalOutside(e) {
-  if (e.target === document.getElementById('modal')) closeModal();
-}
+function closeModal() { document.getElementById('modal').classList.remove('open'); }
+function closeModalOutside(e) { if (e.target === document.getElementById('modal')) closeModal(); }
 
 // ── SHOPEE SEARCH ──
 const shopeeUrls = {
@@ -1426,8 +1611,7 @@ async function translateKeyword() {
   if (!apiKey) { alert('設定タブからGemini APIキーを登録してください'); return; }
 
   const btn = document.getElementById('translate-btn');
-  btn.textContent = '翻訳中...';
-  btn.disabled = true;
+  btn.textContent = '翻訳中...'; btn.disabled = true;
 
   const prompt = `以下の日本語の商品名を、Shopeeで検索するための短いキーワードに翻訳してください。
 商品名: ${keyword}
@@ -1451,14 +1635,12 @@ async function translateKeyword() {
     document.getElementById('search-keyword-vn').value = parsed.vn || '';
     document.getElementById('translated-keywords').style.display = 'block';
   } catch(e) {
-    // 翻訳失敗時は日本語のまま検索できるようにする
     document.getElementById('search-keyword-en').value = keyword;
     document.getElementById('search-keyword-zh').value = keyword;
     document.getElementById('translated-keywords').style.display = 'block';
     alert('翻訳に失敗しました。日本語のまま検索できます。');
   } finally {
-    btn.textContent = '🌐 翻訳して検索準備';
-    btn.disabled = false;
+    btn.textContent = '🌐 翻訳して検索準備'; btn.disabled = false;
   }
 }
 
@@ -1478,8 +1660,7 @@ function getKeyword(market) {
 function openShopee(market) {
   const keyword = getKeyword(market);
   if (!keyword) return false;
-  const url = shopeeUrls[market] + encodeURIComponent(keyword);
-  window.open(url, '_blank');
+  window.open(shopeeUrls[market] + encodeURIComponent(keyword), '_blank');
   return false;
 }
 
@@ -1488,28 +1669,23 @@ function calcExchange() {
   const jpy = parseFloat(document.getElementById('calc-jpy').value);
   const market = document.getElementById('calc-market').value;
   const resultEl = document.getElementById('calc-result');
-  const valueEl = document.getElementById('calc-value');
-  const rateEl = document.getElementById('calc-rate');
-
   if (!jpy || isNaN(jpy)) { resultEl.style.display = 'none'; return; }
 
   const rate = exchangeRates[market];
   const converted = jpy * rate;
   const unitMap = { tw:'NT$', sg:'S$', th:'฿', my:'RM', ph:'₱', vn:'₫' };
   const unit = unitMap[market];
-
-  const fmt = market === 'vn'
+  const fmt2 = market === 'vn'
     ? Math.round(converted).toLocaleString()
     : (converted < 100 ? converted.toFixed(2) : Math.round(converted).toLocaleString());
 
-  valueEl.textContent = unit + ' ' + fmt;
-  rateEl.textContent = `¥1 = ${rate < 1 ? rate.toFixed(4) : rate.toFixed(2)} ${unit}（自動取得レート）`;
+  document.getElementById('calc-value').textContent = unit + ' ' + fmt2;
+  document.getElementById('calc-rate').textContent = `¥1 = ${rate < 1 ? rate.toFixed(4) : rate.toFixed(2)} ${unit}（自動取得レート）`;
   resultEl.style.display = 'block';
 }
 
 // ── TREND CALENDAR ──
 const trendEvents = [
-  // 毎年固定イベント
   { month:1,  day:1,  name:'元旦セール', markets:['台湾','シンガポール','マレーシア'], tags:['全般'], tip:'新年向けギフト・生活用品が狙い目' },
   { month:1,  day:25, name:'旧正月（春節）', markets:['台湾','シンガポール','マレーシア','ベトナム'], tags:['ギフト','掃除用品','食品'], tip:'家の掃除・新生活グッズが売れる。2〜3週前から準備を' },
   { month:2,  day:14, name:'バレンタインデー', markets:['台湾','シンガポール','フィリピン','タイ'], tags:['美容','ギフト'], tip:'コスメ・スキンケアのギフトセットが人気' },
@@ -1524,88 +1700,38 @@ const trendEvents = [
   { month:9,  day:9,  name:'Shopee 9.9スーパーショッピングデー', markets:['全マーケット'], tags:['全般'], tip:'年間最大級セールの一つ。2週前から出品準備開始推奨' },
   { month:10, day:10, name:'Shopee 10.10セール', markets:['全マーケット'], tags:['全般'], tip:'11.11への助走。人気商品を早めにリストアップ' },
   { month:10, day:31, name:'ハロウィン', markets:['台湾','シンガポール','フィリピン'], tags:['雑貨','コスメ'], tip:'仮装・コスメ・お菓子関連が需要増' },
-  { month:11, day:11, name:'11.11 ショッピングデー（最大セール）', markets:['全マーケット'], tags:['全般'], tip:'年間最大のビッグセール！1ヶ月前から出品・価格設定の準備を。無在庫でも仕入れ先の在庫確認必須' },
+  { month:11, day:11, name:'11.11 ショッピングデー（最大セール）', markets:['全マーケット'], tags:['全般'], tip:'年間最大のビッグセール！1ヶ月前から出品・価格設定の準備を' },
   { month:12, day:12, name:'12.12 年末大セール', markets:['全マーケット'], tags:['全般'], tip:'年末の大型セール。クリスマス需要と重なりギフト系が売れる' },
   { month:12, day:25, name:'クリスマス', markets:['台湾','シンガポール','フィリピン','マレーシア'], tags:['ギフト','雑貨'], tip:'プレゼント需要。ギフト向け日本製品が好評' },
 ];
 
-// 共通ベース（月別）
 const monthlyBase = {
-  1:  { theme:'新年・旧正月準備',    reason:'新年の新生活スタートと旧正月準備が重なる。家の掃除・整理グッズが需要増', items:['掃除用品','収納ボックス','加湿器','保湿クリーム','日用品まとめ買い','防災グッズ','鍋・調理器具','空気清浄機フィルター','タオルセット','ルームフレグランス'] },
+  1:  { theme:'新年・旧正月準備', reason:'新年の新生活スタートと旧正月準備が重なる', items:['掃除用品','収納ボックス','加湿器','保湿クリーム','日用品まとめ買い','防災グッズ','鍋・調理器具','空気清浄機フィルター','タオルセット','ルームフレグランス'] },
   2:  { theme:'バレンタイン・旧正月', reason:'バレンタインのプレゼント需要とアジア圏の旧正月ギフト需要が重なる', items:['スキンケア','コスメ','ギフトセット','入浴剤','ハンドクリーム','アイクリーム','美容液','マスクパック','ネイルケア','ルームフレグランス'] },
-  3:  { theme:'新生活・春支度',      reason:'台湾・東南アジアでも新学期・新生活シーズン。整理整頓グッズが人気', items:['収納グッズ','キッチン用品','文具','アロマ','洗濯グッズ','掃除道具','食器','ランチボックス','エコバッグ','インテリア雑貨'] },
-  4:  { theme:'春・暑さ対策',        reason:'ソンクラーン（タイ）・暑さ対策シーズン。日本の日焼け止めは海外で高評価', items:['日焼け止め','虫除け','冷感タオル','携帯扇風機','防水グッズ','UVカットウェア','水筒・ボトル','帽子・日傘','冷却スプレー','スポーツサングラス'] },
-  5:  { theme:'母の日・初夏',        reason:'母の日ギフト需要がピーク。日本製コスメ・キッチン用品がプレゼントに人気', items:['スキンケア','ハンドクリーム','キッチン雑貨','フェイスマスク','美容オイル','アロマキャンドル','入浴剤','ヘアケア','食器・カップ','エコ用品'] },
-  6:  { theme:'雨季・夏準備',        reason:'東南アジアの雨季・高温多湿な季節。日本の防カビ・除湿グッズが刺さる', items:['除湿剤','防カビグッズ','冷感タオル','制汗グッズ','消臭スプレー','防水スプレー','冷感インナー','携帯扇風機','日焼け止め','アイスノン'] },
-  7:  { theme:'真夏・UV対策',        reason:'最も暑い時期。日本製UVケア商品は品質の高さで差別化できる', items:['日焼け止め','冷感グッズ','虫除け','UV美容液','冷感スプレー','水筒・ボトル','冷感マスク','日傘','アフターサンケア','スポーツドリンク'] },
-  8:  { theme:'8.8セール・夏本番',   reason:'8.8ビッグセール。価格競争になりやすいが日本製ブランドは強み', items:['健康グッズ','美容家電','スポーツ用品','ダイエット用品','サプリメント','マッサージグッズ','ヘアアイロン','電動歯ブラシ','フィットネス用品','スキンケアセット'] },
-  9:  { theme:'9.9スーパーセール',   reason:'年間最大級セールの一つ。多ジャンルで需要が爆発。1ヶ月前から仕入れ先確認を', items:['スキンケア','日用品まとめ','キッチン用品','ヘルスケア','美容液','掃除グッズ','収納用品','食品・お菓子','インテリア','ペット用品'] },
-  10: { theme:'秋・乾燥対策',        reason:'乾燥シーズン突入。保湿系スキンケアの需要が上がる。ハロウィン需要も', items:['保湿クリーム','ボディケア','リップケア','ヘアオイル','ハンドマスク','保湿パック','美容オイル','入浴剤','加湿器','コスメ'] },
-  11: { theme:'11.11 最大セール',    reason:'年間最大のショッピングデー。出品数を増やして多くの注文に備える準備を', items:['スキンケアセット','美容家電','キッチン家電','健康食品','ヘアケアセット','サプリメント','収納グッズ','インテリア雑貨','ペット用品','掃除ロボット'] },
-  12: { theme:'12.12・年末・ギフト', reason:'クリスマスギフトと12.12セール、年末大掃除需要が重なる最高の月', items:['ギフトセット','スキンケア','掃除用品','お菓子・食品','アロマグッズ','キッチン用品','タオルセット','入浴剤セット','文具セット','雑貨'] },
+  3:  { theme:'新生活・春支度', reason:'新学期・新生活シーズン。整理整頓グッズが人気', items:['収納グッズ','キッチン用品','文具','アロマ','洗濯グッズ','掃除道具','食器','ランチボックス','エコバッグ','インテリア雑貨'] },
+  4:  { theme:'春・暑さ対策', reason:'ソンクラーン（タイ）・暑さ対策シーズン', items:['日焼け止め','虫除け','冷感タオル','携帯扇風機','防水グッズ','UVカットウェア','水筒・ボトル','帽子・日傘','冷却スプレー','スポーツサングラス'] },
+  5:  { theme:'母の日・初夏', reason:'母の日ギフト需要がピーク', items:['スキンケア','ハンドクリーム','キッチン雑貨','フェイスマスク','美容オイル','アロマキャンドル','入浴剤','ヘアケア','食器・カップ','エコ用品'] },
+  6:  { theme:'雨季・夏準備', reason:'東南アジアの雨季・高温多湿な季節。日本の防カビ・除湿グッズが刺さる', items:['除湿剤','防カビグッズ','冷感タオル','制汗グッズ','消臭スプレー','防水スプレー','冷感インナー','携帯扇風機','日焼け止め','アイスノン'] },
+  7:  { theme:'真夏・UV対策', reason:'最も暑い時期。日本製UVケア商品は品質の高さで差別化できる', items:['日焼け止め','冷感グッズ','虫除け','UV美容液','冷感スプレー','水筒・ボトル','冷感マスク','日傘','アフターサンケア','スポーツドリンク'] },
+  8:  { theme:'8.8セール・夏本番', reason:'8.8ビッグセール', items:['健康グッズ','美容家電','スポーツ用品','ダイエット用品','サプリメント','マッサージグッズ','ヘアアイロン','電動歯ブラシ','フィットネス用品','スキンケアセット'] },
+  9:  { theme:'9.9スーパーセール', reason:'年間最大級セールの一つ', items:['スキンケア','日用品まとめ','キッチン用品','ヘルスケア','美容液','掃除グッズ','収納用品','食品・お菓子','インテリア','ペット用品'] },
+  10: { theme:'秋・乾燥対策', reason:'乾燥シーズン突入。保湿系スキンケアの需要が上がる', items:['保湿クリーム','ボディケア','リップケア','ヘアオイル','ハンドマスク','保湿パック','美容オイル','入浴剤','加湿器','コスメ'] },
+  11: { theme:'11.11 最大セール', reason:'年間最大のショッピングデー', items:['スキンケアセット','美容家電','キッチン家電','健康食品','ヘアケアセット','サプリメント','収納グッズ','インテリア雑貨','ペット用品','掃除ロボット'] },
+  12: { theme:'12.12・年末・ギフト', reason:'クリスマスギフトと12.12セール、年末大掃除需要が重なる', items:['ギフトセット','スキンケア','掃除用品','お菓子・食品','アロマグッズ','キッチン用品','タオルセット','入浴剤セット','文具セット','雑貨'] },
 };
 
-// 国別の追加・入れ替えアイテム（各月の先頭に追加して上書き）
 const countryOverrides = {
-  台湾: {
-    1:  ['花粉対策マスク','空気清浄機','保湿スキンケア'],
-    3:  ['花粉症対策','アロマディフューザー','整理収納'],
-    4:  ['桜モチーフ雑貨','UV美容液','花粉対策'],
-    6:  ['台湾茶器','防カビグッズ','除湿剤'],
-    9:  ['中秋節ギフト','台湾限定雑貨','お菓子'],
-    10: ['保湿美容液','漢方系サプリ','防寒インナー'],
-    12: ['防寒グッズ','ホットドリンクグッズ','年末大掃除'],
-  },
-  シンガポール: {
-    1:  ['ギフトセット','中華系雑貨','高級スキンケア'],
-    3:  ['エコグッズ','ミニマルインテリア','オーガニックコスメ'],
-    5:  ['高級コスメ','オーガニック食品','エシカル雑貨'],
-    6:  ['除湿剤','冷感グッズ','虫除けスプレー'],
-    9:  ['高級スキンケアセット','プレミアム日用品','ペット用品'],
-    11: ['プレミアムギフト','美容家電','キッチン家電'],
-  },
-  タイ: {
-    1:  ['お守り・縁起物','仏具関連雑貨','健康食品'],
-    3:  ['虫除けスプレー','防水グッズ','冷感タオル'],
-    4:  ['防水グッズ','冷感スプレー','ソンクラーン関連'],
-    6:  ['防水スプレー','虫除け','熱中症対策グッズ'],
-    7:  ['虫除けパッチ','冷感シート','アウトドア用品'],
-    10: ['美白スキンケア','日焼け止め','冷感グッズ'],
-    12: ['年末ギフト','美容液','マスクパック'],
-  },
-  マレーシア: {
-    1:  ['ハラール対応食品','ギフトセット','日用品'],
-    3:  ['ラマダン準備グッズ','食器','調理器具'],
-    4:  ['ハリラヤギフト','コスメ','スキンケア'],
-    6:  ['除湿剤','虫除け','防カビグッズ'],
-    8:  ['独立記念日ギフト','日用品セット','スキンケア'],
-    10: ['保湿スキンケア','ヘアケア','ボディケア'],
-    12: ['クリスマスギフト','年末掃除グッズ','お菓子'],
-  },
-  フィリピン: {
-    1:  ['サン・ホセ祭り関連','カラフル雑貨','日用品'],
-    5:  ['母の日コスメ','スキンケアギフト','フレグランス'],
-    6:  ['防水グッズ','台風対策用品','防水バッグ'],
-    7:  ['台風対策グッズ','防水スプレー','保存食'],
-    9:  ['美白スキンケア','UV対策','コスメ'],
-    12: ['クリスマスギフト','お菓子','カラフル雑貨'],
-  },
-  ベトナム: {
-    1:  ['テト（旧正月）ギフト','伝統的雑貨','縁起物'],
-    2:  ['テト準備グッズ','掃除用品','ギフトセット'],
-    4:  ['虫除けスプレー','防水グッズ','熱中症対策'],
-    6:  ['雨季対策グッズ','防水用品','除湿剤'],
-    8:  ['夏祭り関連','冷感グッズ','スポーツ用品'],
-    9:  ['中秋節ギフト','お菓子','ランタン雑貨'],
-    12: ['年末ギフト','クリスマス雑貨','スキンケアセット'],
-  },
+  台湾: { 1:['花粉対策マスク','空気清浄機','保湿スキンケア'], 6:['台湾茶器','防カビグッズ','除湿剤'], 9:['中秋節ギフト','台湾限定雑貨','お菓子'] },
+  シンガポール: { 5:['高級コスメ','オーガニック食品','エシカル雑貨'], 6:['除湿剤','冷感グッズ','虫除けスプレー'] },
+  タイ: { 4:['防水グッズ','冷感スプレー','ソンクラーン関連'], 6:['防水スプレー','虫除け','熱中症対策グッズ'] },
+  マレーシア: { 4:['ハリラヤギフト','コスメ','スキンケア'], 6:['除湿剤','虫除け','防カビグッズ'] },
+  フィリピン: { 6:['防水グッズ','台風対策用品','防水バッグ'], 9:['美白スキンケア','UV対策','コスメ'] },
+  ベトナム: { 1:['テト（旧正月）ギフト','伝統的雑貨','縁起物'], 6:['雨季対策グッズ','防水用品','除湿剤'], 9:['中秋節ギフト','お菓子','ランタン雑貨'] },
 };
 
-// 国と月からおすすめアイテムを取得
 function getMonthlyItems(market, month) {
   const base = monthlyBase[month];
   const overrides = countryOverrides[market]?.[month] || [];
-  // 国別アイテムを先頭に追加し、重複を除いて10個に
   const merged = [...new Set([...overrides, ...base.items])].slice(0, 10);
   return { theme: base.theme, items: merged };
 }
@@ -1626,12 +1752,7 @@ function renderMonthlyRecommend() {
       ${rec.items.map(item => `
         <button onclick="runResearchWithGenre('${item}')"
           style="background:var(--orange-pale);color:var(--orange);font-size:12px;font-weight:700;
-          padding:6px 12px;border-radius:20px;border:1.5px solid var(--orange);cursor:pointer;
-          transition:all 0.15s;"
-          onmouseover="this.style.background='#EE4D2D';this.style.color='white'"
-          onmouseout="this.style.background='var(--orange-pale)';this.style.color='var(--orange)'">
-          ${item}
-        </button>`).join('')}
+          padding:6px 12px;border-radius:20px;border:1.5px solid var(--orange);cursor:pointer;">${item}</button>`).join('')}
     </div>
     <div style="font-size:11px;color:var(--mid);background:var(--light);border-radius:8px;padding:8px 10px;line-height:1.7;">
       💡 ${monthlyBase[month].reason || ''}
@@ -1643,10 +1764,6 @@ function renderCalendar() {
   const el = document.getElementById('calendar-list');
   if (!el) return;
   const now = new Date();
-  const currentMonth = now.getMonth() + 1;
-  const currentDay = now.getDate();
-
-  // 今日以降180日分のイベントを抽出・ソート
   const upcoming = [];
   for (let offset = 0; offset <= 180; offset++) {
     const d = new Date(now);
@@ -1654,17 +1771,13 @@ function renderCalendar() {
     const m = d.getMonth() + 1;
     const day = d.getDate();
     trendEvents.forEach(ev => {
-      if (ev.month === m && ev.day === day) {
-        upcoming.push({ ...ev, date: d, daysLeft: offset });
-      }
+      if (ev.month === m && ev.day === day) upcoming.push({ ...ev, date: d, daysLeft: offset });
     });
   }
-
   if (upcoming.length === 0) {
     el.innerHTML = '<div style="text-align:center;color:var(--mid);font-size:13px;padding:16px;">今後180日間の主要イベントはありません</div>';
     return;
   }
-
   el.innerHTML = upcoming.map(ev => {
     const isToday = ev.daysLeft === 0;
     const isSoon = ev.daysLeft <= 14;
@@ -1672,16 +1785,14 @@ function renderCalendar() {
     const urgencyBg = isToday ? 'rgba(239,68,68,0.06)' : isSoon ? 'rgba(245,158,11,0.06)' : 'var(--white)';
     const dateStr = `${ev.date.getMonth()+1}/${ev.date.getDate()}`;
     const daysStr = isToday ? '🔴 今日！' : ev.daysLeft <= 7 ? `🟡 あと${ev.daysLeft}日` : `あと${ev.daysLeft}日`;
-    const marketsStr = ev.markets.join('・');
     const tagsStr = ev.tags.map(t => `<span style="display:inline-block;background:var(--orange-pale);color:var(--orange);font-size:10px;padding:1px 6px;border-radius:4px;margin-right:3px;">${t}</span>`).join('');
-
     return `
     <div style="border:1.5px solid ${urgency};border-radius:10px;padding:12px;margin-bottom:10px;background:${urgencyBg};">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;">
         <div style="font-size:13px;font-weight:700;color:var(--dark);flex:1;">${ev.name}</div>
         <div style="font-size:11px;color:var(--mid);white-space:nowrap;margin-left:8px;">${dateStr}（${daysStr}）</div>
       </div>
-      <div style="font-size:11px;color:var(--mid);margin-bottom:6px;">📍 ${marketsStr}</div>
+      <div style="font-size:11px;color:var(--mid);margin-bottom:6px;">📍 ${ev.markets.join('・')}</div>
       <div style="margin-bottom:6px;">${tagsStr}</div>
       <div style="font-size:11px;color:var(--dark);background:var(--light);border-radius:6px;padding:6px 8px;">💡 ${ev.tip}</div>
     </div>`;
@@ -1694,8 +1805,7 @@ async function doResearch(market, genre) {
   if (!apiKey) { alert('設定タブからGemini APIキーを登録してください'); return; }
 
   const btn = document.getElementById('research-btn');
-  btn.textContent = '調査中...';
-  btn.disabled = true;
+  btn.textContent = '調査中...'; btn.disabled = true;
 
   const resultEl = document.getElementById('research-result');
   const contentEl = document.getElementById('research-content');
@@ -1736,28 +1846,18 @@ async function doResearch(market, genre) {
       .replace(/###(.*?)<br>/g, '<div style="font-weight:700;color:var(--orange);margin-top:14px;margin-bottom:4px;">$1</div>')
       .replace(/##(.*?)<br>/g, '<div style="font-weight:700;margin-top:12px;margin-bottom:4px;">$1</div>');
     resultEl.style.display = 'block';
-    // 結果までスクロール
     resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
   } catch(e) {
     alert('調査に失敗しました。APIキーを確認してください。');
   } finally {
-    btn.textContent = '🔍 この国×カテゴリーで調べる';
-    btn.disabled = false;
+    btn.textContent = '🔍 この国×カテゴリーで調べる'; btn.disabled = false;
   }
 }
 
-function runResearch() {
-  const market = document.getElementById('r-market').value;
-  const category = document.getElementById('r-category').value;
-  doResearch(market, category);
-}
+function runResearch() { doResearch(document.getElementById('r-market').value, document.getElementById('r-category').value); }
+function runResearchWithGenre(genre) { doResearch(document.getElementById('r-market').value, genre); }
 
-function runResearchWithGenre(genre) {
-  const market = document.getElementById('r-market').value;
-  doResearch(market, genre);
-}
-
-// init
+// ── INIT ──
 renderList();
 renderSummary();
 updateExchangeRates();
@@ -1767,8 +1867,12 @@ window.translateKeyword = translateKeyword;
 window.calcExchange = calcExchange;
 window.switchTab = switchTab;
 window.addProduct = addProduct;
+window.addUrlRow = addUrlRow;
+window.removeUrlRow = removeUrlRow;
 window.deleteProduct = deleteProduct;
 window.editProduct = editProduct;
+window.markChecked = markChecked;
+window.toggleCheckArea = toggleCheckArea;
 window.runResearch = runResearch;
 window.runResearchWithGenre = runResearchWithGenre;
 window.openModal = openModal;
